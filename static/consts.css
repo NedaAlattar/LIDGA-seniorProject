@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Kameron:wght@400..700&display=swap');
+
+:root {
+    /** SPACING, WIDTHS, & BORDER RADI *********/
+
+    --space-v-sm       : 5px;
+    --space-sm         : 10px;
+    --space-med        : 20px;
+    --space-lg         : 30px;
+    --space-v-lg       : 60px;
+                       
+    --button-width     : 150px;
+    --body-width       : 1200px;
+    --content-width    : 400px;
+    --icon-button-width: 45px;
+    --transition-height: 150px;
+
+    --radius-sm        : 5px;
+    --radius-med       : 10px;
+    --radius-lg        : 20px;
+    --radius-v-lg      : 50px;
+
+    /** COLORS *********************************/
+
+    --body-color                     : #FFF;
+    --body-element-color             : #EEE;
+    --body-text-color                : #000;
+
+    --accent-color                   : #CC4227;
+    --accent-element-color           : #A61C00;
+    --accent-text-color              : #FFF;
+
+    --secondary-accent-color         : #A2C4C8;
+    --secondary-accent-element-color : #76A5AF;
+    --secondary-acccent-text-color   : #000;
+
+    --element-color                  : #EEE;
+    --element-text-color             : #000;
+
+    --bookmark-saved-color           : #CC4227;
+
+    --incorrect-color                : #CC4227;
+    --incorrect-shadow-color         : #A61C00;
+    --correct-color                  : #66A94F;
+    --correct-shadow-color           : #38761B;
+
+    /** ANIMATIONS *****************************/
+
+    --hover-fade-speed: .2s;
+
+    /** FONTS & FONT SIZE **********************/
+
+    /* Title */
+    --h1-font       : "Kameron", slab-serif, serif;
+    --h1-font-size  : 50pt;
+
+    /* Main Headings */
+    --h2-font       : "Kameron", slab-serif, serif;
+    --h2-font-size  : 16pt;
+
+    /* Secendary Headings */
+    --h3-font       : "Kameron", slab-serif, serif;
+    --h3-font-size  : 16pt;
+
+    /* Minor Headings */
+    --h4-font       : "Kameron", slab-serif, serif;
+    --h4-font-size  : 12pt;
+
+    /* Subheading Headings */
+    --h5-font       : "Kameron", slab-serif, serif;
+    --h5-font-size  : 12pt;
+
+    --body-font     : "Kameron", slab-serif, serif;
+    --body-font-size: 12pt;
+    
+    --code-font     : "Courier Prime", monospace, "Kameron", slab-serif, serif;
+    --code-font-size: 12pt;
+}

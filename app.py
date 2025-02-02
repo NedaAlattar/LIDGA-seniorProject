@@ -1,11 +1,25 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, request, url_for, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from threading import Thread
+from flask_login import LoginManager, current_user
+from flask_migrate import Migrate
 
-app = Flask(__name__)
+db = SQLAlchemy() #create object db
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+def create_app():
+    app = Flask(__name__, template_folder='templates')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' 
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    db.init_app(app)  #initialize the application
+    from routes import register_routes
+    register_routes(app,db)
+
+    migrate = Migrate(app, db) #Migrating the application and database through db (database object)
+    
+    return app
+
+
+
+
 

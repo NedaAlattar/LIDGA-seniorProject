@@ -1,0 +1,86 @@
+{
+    "name": "Example Question 1",
+    "type": "question",
+    "chapter": 0,
+    "content": [
+        {
+            "type": "header",
+            "value": "What is the building pictured?"
+        },
+        {
+            "type": "stackable",
+            "content": [
+                {
+                    "type": "image",
+                    "value": "greenhouse.jpg"
+                },
+                {
+                    "type": "response_multiple_choice",
+                    "content": [
+                        "Greenhouse",
+                        "Library",
+                        "Duck pond",
+                        "Highschool"
+                    ],
+                    "correct": 0,
+                    "shuffle": false,
+                    "diffuclty": 2
+                }
+            ]
+        },
+        {
+            "type": "question_incorrect",
+            "value": "Umm. That’s a greenhouse. Just look at all the green."
+        },
+        {
+            "type": "code",
+            "_comment": "*** This is not valid JSON but is the end result from base64 encoding. ***",
+            "value":
+            "
+                <div class="form-row">
+                  <input type="radio" id="option0" name="question0" />
+                  <label for="option0">Greenhouse</label>
+                </div>
+                <div class="form-row">
+                  <input type="radio" id="option1" name="question0" />
+                  <label for="option1">Library</label>
+                </div>
+                <div class="form-row">
+                  <input type="radio" id="option2" name="question0" />
+                  <label for="option2">Duck pond</label>
+                </div>
+                <div class="form-row">
+                  <input type="radio" id="option3" name="question0" />
+                  <label for="option3">Highschool</label>
+                </div>
+            "
+        },
+        {
+            "type": "long_text",
+            "content": [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed dui sagittis, porttitor lectus lobortis, consectetur velit. Vivamus quam est, ullamcorper non pulvinar nec, ornare in risus. Mauris scelerisque a neque ac cursus. Fusce eget vehicula ipsum. Nunc tempus, risus at hendrerit finibus, quam ante fermentum massa, vitae pulvinar justo ante sit amet dolor. Aenean at magna vel tortor posuere maximus sit amet ac dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis hendrerit ex sed viverra consequat. Vivamus vehicula vel ex vitae iaculis. Nulla sollicitudin est sapien. Sed egestas, felis non ultrices posuere, leo orci malesuada diam, in vulputate augue urna eu sem. Integer dui nisl, pulvinar at scelerisque in, feugiat vel sem. In hendrerit justo nec hendrerit mattis. Nulla ullamcorper lorem sed orci mollis sodales",
+                "Aenean vitae orci tortor. Vivamus suscipit arcu eu consectetur tincidunt. Duis ultrices at nibh nec varius. Integer sed purus vel quam ultricies gravida. Donec rutrum sem nisi, non ornare diam fringilla congue. Nunc blandit, elit eu laoreet ultricies, ligula ligula posuere tellus, et sollicitudin risus risus id sapien. Suspendisse sodales sapien purus, scelerisque tempus erat dignissim at. Duis viverra facilisis arcu, efficitur auctor augue elementum vel. Integer suscipit, risus vitae rhoncus semper, ante justo sollicitudin tortor, ac feugiat diam nulla eget tellus. Quisque feugiat ipsum enim, ac aliquam tortor faucibus eu."
+            ]
+        },
+        {
+            "type": "number_list",
+            "content": [
+                "Lorem ipsum dolor sit amet, consectetur",
+                "Adipiscing elit. Maecenas",
+                "A dignissim lectus. Mauris varius est volutpat mollis imperdiet. Interdum et malesuada fames ac ante ipsum primis in faucibus",
+                "Duis felis purus pulvinar sit",
+                "Amet massa vel"
+            ]
+        },
+        {
+            "type": "bullet_list",
+            "content": [
+                "Lorem ipsum dolor sit amet, consectetur",
+                "Adipiscing elit. Maecenas",
+                "A dignissim lectus. Mauris varius est volutpat mollis imperdiet. Interdum et malesuada fames ac ante ipsum primis in faucibus",
+                "Duis felis purus pulvinar sit",
+                "Amet massa vel"
+            ]
+        }
+    ]
+}
