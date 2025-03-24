@@ -12,8 +12,10 @@
     --button-width     : 150px;
     --body-width       : 1200px;
     --content-width    : 400px;
-    --icon-button-width: 45px;
+    --icon-button-width: 35px;
     --transition-height: 150px;
+    --nav-line-width   : 4px;
+    --line-width       : 2px;
 
     --radius-sm        : 5px;
     --radius-med       : 10px;
@@ -35,6 +37,7 @@
     --secondary-acccent-text-color   : #000;
 
     --element-color                  : #EEE;
+    --element-element-color          : #999;
     --element-text-color             : #000;
 
     --bookmark-saved-color           : #CC4227;

@@ -1,0 +1,30 @@
+{
+    "name": "RXhhbXBsZSBRdWVzdGlvbiAz",
+    "type": "question",
+    "chapter": 0,
+    "content": [
+        {
+            "type": "header",
+            "content": "QUhIISBBIFF1ZXN0aW9uISAoc2VsZWN0IG9uZSk="
+        },
+        {
+            "type":"stackable",
+            "content": [
+                {
+                    "type": "response_multiple_choice",
+                    "content": [
+                        "R3JlZW5ob3VzZQ==",
+                        "TGlicmFyeQ==",
+                        "RHVjayBwb25k",
+                        "SGlnaHNjaG9vbA=="
+                    ],
+                    "correct": 0,
+                    "shuffle": true,
+                    "diffuclty": 5
+                }
+
+            ]
+      
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "name": "Example Question 1",
+    "type": "image",
+    "chapter": 0,
+    "content": [
+        {
+            "type": "header",
+            "value": "♫ Look at this photograph ♫"
+        },
+        {
+            "type": "stackable",
+            "content": [
+                {
+                    "type": "image",
+                    "value": "greenhouse.jpg"
+                },
+                {
+                    "type": "long-text",
+                    "value": "♫ Every time I do, it makes me laugh ♫"
+                }
+            ]
+        }
+    ]
+}

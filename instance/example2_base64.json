@@ -1,0 +1,26 @@
+{
+    "name": "RXhhbXBsZSBRdWVzdGlvbiAyIg==",
+    "type": "text",
+    "chapter": 0,
+    "content": [
+        {
+            "type": "header",
+            "value": "4pmrIExvb2sgYXQgdGhpcyBwaG90b2dyYXBoIOKZqw=="
+        },
+        {
+            "type": "stackable",
+            "content":[
+                {
+                    "type": "image",
+                    "value": "greenhouse.jpg"
+                },
+                {
+                    "type": "long-text",
+                    "content": [
+                        "4pmrIEV2ZXJ5IHRpbWUgSSBkbywgaXQgbWFrZXMgbWUgbGF1Z2gg4pmr"
+                    ]
+                }
+        ]
+        }
+    ]
+}

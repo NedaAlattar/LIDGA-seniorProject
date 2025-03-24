@@ -1,4 +1,7 @@
 body {
+    font-family: var(--body-font);
+    font-size: var(--body-font-size);
+    color: var(--body-text-color);
     margin: 0;
     padding: 0;
 }
@@ -39,6 +42,16 @@ h3 {
     font-weight: bold;
 }
 
+h4 {
+    margin: 0;
+    padding: 0;
+    
+    align-content: center;
+    font-family: var(--h4-font);
+    font-size: var(--h4-font-size);
+    font-weight: bold;
+}
+
 h5 {
     margin: 0;
     padding: 0;
@@ -54,6 +67,8 @@ p {
     padding: 0;
     text-align: justify;
     text-indent: 20px;
+    font-family: var(--body-font);
+    font-size: var(--body-font-size);
 }
 
 .long-text {
@@ -77,9 +92,32 @@ pre {
 }
 
 img {
+    background-color: var(--element-color);
+    width: 100%;
+    height: 100%;
+}
+
+.image {
     width: 100%;
     background-color: var(--element-color);
     border-radius: var(--radius-med);
+    position: relative;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.image .description {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-med) var(--space-med) var(--space-sm);
+    position: absolute;
+    bottom: 0;
+    color: white;
+    background-image: linear-gradient(transparent, black);
+}
+
+.hidden {
+    display: none;
 }
 
 /** INPUT **************************************/
@@ -89,10 +127,201 @@ button {
     font-size: var(--body-text-size);
     font-family: var(--body-font);
     color: var(--body-text-color);
+    
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    background-color: var(--element-color);
+    color: var(--element-text-color);
+    border-radius: var(--radius-sm);
+    outline: none;
+    border: none;
+    padding: var(--space-v-sm) var(--space-sm);
+}
+
+/* RANGE INPUT */
+
+input[type="range"] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+    border-radius: var(--radius-med);   
+    border: var(--line-width) solid transparent;
+    padding: 0;
+    margin: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+
+    /* Hides the slider so custom styles can be added */
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: var(--space-med);
+    width: var(--space-med);
+    border-radius: var(--radius-med);
+    background: var(--accent-color);
+    cursor: pointer;
+    margin-top: calc(-1 * var(--space-v-sm));
+}
+
+input[type="range"]:focus {
+    border: var(--line-width) solid var(--element-text-color);
+}
+
+/* All the same stuff for Firefox */
+input[type="range"]::-moz-range-thumb {
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: var(--accent-color);
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type="range"]::-ms-thumb {
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: var(--accent-color);
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: var(--space-sm);
+    cursor: pointer;
+    background: transparent;
+    border-radius: var(--radius-med);
+    border: none;
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: var(--space-sm);
+    cursor: pointer;
+    background: transparent;
+    border-radius: var(--radius-med);
+    border: none;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+
+input[type="range"]::-ms-fill-lower {
+    background: transparent;
+    border-radius: var(--radius-med);
+}
+
+input[type="range"]:focus::-ms-fill-lower {
+    background: transparent;
+}
+
+input[type="range"]::-ms-fill-upper {
+    background: transparent;
+    border-radius: var(--radius-med);
+}
+
+input[type="range"]:focus::-ms-fill-upper {
+    background: transparent;
+}
+
+.range-label {
+    display: flex;
+    justify-content: space-between;
+}
+
+.range-wrap {
+    width: 100%;
+    height: var(--space-sm);
+}
+
+.range-dot-wrap {
+    z-index: -1;
+    position: relative;
+    top: -17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 calc(var(--space-v-sm) + 2 * var(--line-width));
+    
+    background-color: var(--element-color);
+    border-radius: var(--radius-sm);
+    height: var(--space-sm);
+    margin-bottom: calc(-1 * var(--space-sm));
+}
+
+.range-dot {
+    width: var(--space-v-sm);
+    height: var(--space-v-sm);
+    border-radius: var(--radius-sm);
+    background-color: var(--element-element-color);
+}
+
+
+/* CHOICE INPUT */
+
+.choice-input input[type="radio"],
+.choice-input input[type="checkbox"] {
+    display: none;
+}
+
+select {
+    background-color: var(--element-color);
+    font-size: var(--body-text-size);
+    font-family: var(--body-font);
+    color: var(--element-text-color);
+    border-radius: var(--radius-sm);
+    outline: none;
+    border: none;
+    padding: var(--space-v-sm) var(--space-sm);
+}
+
+select option {
+    background-color: var(--element-color);
+    color: var(--element-text-color);
+}
+
+input[type="text"].heading-text {
+    align-content: center;
+    font-family: var(--h3-font);
+    font-size: var(--h3-font-size);
+    font-weight: bold;
+    width: 100%;
 }
 
 .form-row {
     margin: var(--space-sm);
+}
+
+.center-up-down {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    gap: var(--space-sm);
 }
 
 .submit-row {
@@ -179,14 +408,96 @@ button:hover {
     background-color: transparent;
 }
 
-button[type="button"] {
+button[type="submit"] {
     color: var(--accent-text-color);
     background-color: var(--accent-color);
     outline: none;
 }
 
-button[type="button"]:hover {
+button[type="submit"]:hover {
     background-color: var(--accent-element-color);
+}
+
+.bookmarked {
+    color: var(--bookmark-saved-color);
+    font-variation-settings: 'FILL' 1 !important;
+}
+
+textarea {
+    margin: 0;
+    padding: var(--space-v-sm) var(--space-sm);
+    height: 100%;
+    
+    border-radius: var(--radius-sm);
+    background-color: var(--element-color);
+    color: var(--element-text-color);
+
+    text-indent: 20px;
+    font-family: var(--body-font);
+    font-size: var(--body-font-size);
+    resize: none;
+    border: none;
+    outline: none;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus,
+button:focus,
+.button-icon:focus,
+.link-icon:focus,
+.icon:focus,
+a:focus {
+    outline: var(--line-width) solid var(--element-text-color);
+}
+
+/** ICONS **************************************/
+
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.noselect,
+.material-symbols-rounded {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Safari */
+    -khtml-user-select: none;    /* Konqueror HTML */
+    -moz-user-select: none;      /* Old versions of Firefox */
+    -ms-user-select: none;       /* Internet Explorer / Edge */
+    user-select: none;           /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+button.button-icon,
+.button-icon,
+a.link-icon,
+.link-icon,
+.icon {
+    width: var(--icon-button-width);
+    height: var(--icon-button-width);
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+    text-align: center;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--body-text-color);
+    background-color: transparent;
+    outline: none;
+    border: none;
+    transition: background-color var(--hover-fade-speed);
+    flex-shrink: 0;
+}
+
+.link-icon:hover,
+.button-icon:hover {
+    background-color: var(--element-color);
 }
 
 /** FORMATTING *********************************/
@@ -224,7 +535,7 @@ button[type="button"]:hover {
     min-width: 0;
     width: 100%;
     max-width: 100%;
-    column-gap: var(--space-sm);
+    column-gap: var(--space-med);
 }
 
 .stackable-group > * {
@@ -239,6 +550,39 @@ button[type="button"]:hover {
 
 .content li {
     margin-bottom: var(--space-sm);
+}
+
+#card-tags {
+    display: inline-block;
+}
+
+.tag {
+    padding: var(--space-v-sm) var(--space-sm);
+    border-radius: var(--radius-sm);
+    color: var(--element-text-color);
+    text-align: center;
+    align-content: center;
+}
+
+.tag:hover {
+    background-color: var(--element-color);
+}
+
+.grow-wrap {
+    display: grid;
+}
+.grow-wrap::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+}
+.grow-wrap > textarea {
+    resize: none;
+    overflow: hidden;
+}
+.grow-wrap > textarea,
+.grow-wrap::after {
+    grid-area: 1 / 1 / 2 / 2;
 }
 
 /** NAVBAR *************************************/
@@ -258,7 +602,7 @@ button[type="button"]:hover {
     align-items: center;
     gap: var(--space-sm);
 
-    outline: var(--space-v-sm) dashed var(--accent-element-color);
+    outline: var(--nav-line-width) dashed var(--accent-element-color);
     outline-offset: var(--space-v-sm);
 }
 
@@ -289,6 +633,10 @@ button[type="button"]:hover {
     font-family: var(--body-font);
     font-size: var(--body-font-size);
     transition: background-color var(--hover-fade-speed);
+    border-radius: var(--radius-sm);
+}
+
+.nav-item > * {
     padding: var(--space-v-sm) var(--space-sm);
     border-radius: var(--radius-sm);
 }
@@ -306,6 +654,10 @@ button[type="button"]:hover {
 
 .nav-group-item * {
     display: inline-block;
+}
+
+.nav-active {
+    background-color: var(--accent-element-color);
 }
 
 /** ACCENT BOX *********************************/
@@ -335,35 +687,4 @@ button[type="button"]:hover {
 
     background-color: var(--secondary-accent-color);
     color: var(--secondary-accent-text-color);
-}
-
-/** ICONS **************************************/
-
-.icon {
-    width: var(--space-lg);
-    height: var(--space-lg);
-}
-
-.link-icon,
-.button-icon {
-    height: var(--icon-button-width);
-    width: var(--icon-button-width);
-    
-    display: inline-block;
-    align-content: center;
-    text-align: center;
-    padding: auto auto;
-    
-    text-decoration: none;
-    color: var(--body-text-color);
-    background-color: transparent;
-    border-radius: var(--radius-v-lg);
-    outline: none;
-    border: none;
-    transition: background-color var(--hover-fade-speed);
-}
-
-.link-icon:hover,
-.button-icon:hover {
-    background-color: var(--element-color);
 }

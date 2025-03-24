@@ -1,0 +1,23 @@
+{
+    "name": "Example Question 3",
+    "type": "question",
+    "chapter": 0,
+    "content": [
+        {
+            "type": "header",
+            "content": "AHH! A Question! (select one)"
+        },
+        {
+            "type": "response_multiple_choice",
+            "content": [
+                "Greenhouse",
+                "Library",
+                "Duck pond",
+                "Highschool"
+            ],
+            "correct": 0,
+            "shuffle": true,
+            "diffuclty": 5
+        }
+    ]
+}
