@@ -1,49 +1,29 @@
 name: SQL for GitHub Actions
- 
-    on:
-        push:
-            branches: [ main ]
-        pull_request:
-            branches: [ main ]
- 
-    jobs:
-        build:
-            runs-on: windows-latest
-            steps:
-             - uses: actions/checkout@v1
-             - uses: azure/login@v2
-               with:
-                client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-   - uses: azure/sql-action@v2
-    with:
-      connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-      path: './Database.dacpac'
-      action: 'Publish'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
 
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      name: SQL for GitHub Actions
- 
-    on:
-        push:
-            branches: [ main ]
-        pull_request:
-            branches: [ main ]
- 
-    jobs:
-        build:
-            runs-on: windows-latest
-            steps:
-             - uses: actions/checkout@v1
-             - uses: azure/login@v2
-               with:
-                client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            # Azure logout 
-             - name: logout
-               run: |
-                 az logout
+      - uses: azure/sql-action@v2
+        with:
+          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          path: './Database.dacpac'
+          action: 'Publish'
+
+      - name: logout
+        run: |
+          az logout
