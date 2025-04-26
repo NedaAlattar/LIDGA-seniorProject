@@ -1,0 +1,33 @@
+<div class="content">
+    <div class="question">
+        <form id="question" method="POST" action="{ url_for('checkAnswer') }">
+            <fieldset>
+                <script>
+                    window.onload = function() {{
+                        let isCorrect = "{ isCorrect }"; 
+
+                        if (isCorrect === "True") {{
+                            document.getElementById("correctMessage").style.display = "block";
+                            document.getElementById("incorrectMessage").style.display = "none";
+                        }} else if (isCorrect === "False") {{
+                            document.getElementById("correctMessage").style.display = "none";
+                            document.getElementById("incorrectMessage").style.display = "block";
+                        }} else {{
+                            document.getElementById("correctMessage").style.display = "none";
+                            document.getElementById("incorrectMessage").style.display = "none"; 
+                        }}
+                    }};
+                </script>
+                <div class="submit-row">
+                    <button type="reset">
+                        Clear
+                        <span class="material-symbols-rounded" aria-hidden="true">close</span>
+                    </button>
+                    <button type="submit">Submit</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+html_fragment += render_template("checkAnswer.html", isCorrect=None)

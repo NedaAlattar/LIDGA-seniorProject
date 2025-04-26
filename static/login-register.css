@@ -1,0 +1,85 @@
+/* LOGIN & REGISTER STYLES */
+body {
+    background-color: var(--accent-element-color);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+#body-swoop-before {
+    background-color: var(--accent-color);
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 50vh;
+}
+
+#body-swoop {
+    position: absolute;
+    top: 50vh;
+    width: 100vw;
+    height: var(--transition-height);
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: var(--radius-lg);
+    
+    background-color: var(--body-color);
+    color: var(--body-text-color);
+}
+
+.container-header {
+    width: auto;
+    background-color: var(--secondary-accent-color);
+    color: var(--secendary-accent-text-color);
+    
+    border-radius: var(--radius-med) var(--radius-med) 0 0;
+    margin: var(--space-sm) var(--space-sm) -1px;
+    padding: var(--space-med) var(--space-med) 0;
+}
+
+.header-transition {
+    width: calc(100% - 2 * var(--space-sm));
+    height: var(--space-med);
+    margin: 0 var(--space-sm);
+}
+
+.container-body {
+    margin: var(--space-med) var(--space-lg) var(--space-lg);
+}
+
+.centered-children * {
+    text-align: center;
+}
+
+.centered-children > .uncentered {
+    text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    text-align: left;
+}
+
+.index-button {
+    position: absolute;
+    top: var(--space-lg);
+    left: var(--space-lg);
+    
+    background-color: var(--accent-element-color);
+    border-radius: var(--radius-v-lg);
+    padding: var(--space-sm);
+    color: var(--accent-text-color);
+    
+    outline: var(--space-v-sm) solid var(--accent-element-color);
+}
+
+.index-button:hover {
+    background-color: var(--accent-color);
+}

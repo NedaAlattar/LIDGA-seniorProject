@@ -5,20 +5,18 @@
     "content": [
         {
             "type": "header",
-            "value": "♫ Look at this photograph ♫"
+            "content": "♫ Look at this photograph ♫"
         },
-        {
-            "type": "stackable",
-            "content": [
-                {
-                    "type": "image",
-                    "value": "greenhouse.jpg"
-                },
-                {
-                    "type": "long-text",
-                    "value": "♫ Every time I do, it makes me laugh ♫"
-                }
-            ]
+        {              
+            "type": "image",
+            "content": "greenhouse.jpg"
+        },
+         {       
+            "type": "long-text",
+            "content": "♫ Every time I do, it makes me laugh ♫"
+                 
         }
     ]
 }
+
+

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="charset" content="utf-8" />
+    <meta charset="utf-8" />
+    <title>Discover | Raven</title>
+
+    <link rel="icon" type="image" href="{{url_for('static', filename='favicon-white')}}" async>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='consts.css')}}" />
+    
+    <script src="{{ url_for('static', filename='discover.js') }}" defer></script>
+
+    <!-- Import Google Material Symbols from Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  </head>
+  <body>
+    <nav id="nav" class="nav">
+      <ul>
+        <li class="nav-item">
+          <a href="{{url_for('index')}}" class="nav-group-item">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 181 181" xmlns="http://www.w3.org/2000/svg">
+                <path fill="var(--accent-text-color)" d="m125,135h-10c-3.5,0-6,2.5-6,6c0,3.5,2.5,6,6,6h35c3.25,0,6-2.75,6-6c0-3.5-2.75-6-6-6h-10.5l-10-17l12-7c9.5-6.5,16.5-15.5,19.5-26.5l9.5-35l11.5-3c3-1,5-4.5,5-6c0-2-2-5-5-6l-22.5-6c-9-3.5-19,0-24,8l-1.5,2.5c-7,10.5-12.5,13.5-12.5,13.5l-112,65c-3,1.5-4,5.5-2.5,8.5c1.5,3,5.5,4,8.5,2l71-41h33c3.5,0,6.5-2.5,6.5-6c0-3-3-6-6-6h-13l20.5-11.5c7-4.5,13-11,17-18.5l1.5-2.5c1.5-2.5,5-4,8-2.5c3,1,4.5,4.5,4,7.5l-9.5,33.5c-2,8-7.5,15-14.5,19.5l-29,17c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2l7-4zm-51.5-18c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2zm-33.5,1c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2z" />
+              </svg>
+            </span>
+            <div class="nav-main-link nav-can-hide">Raven</div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-group-item nav-active" href="{{url_for('discover')}}">
+            <span class="material-symbols-rounded" aria-hidden="true">explore</span>
+            <span class="nav-can-hide">Discover</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-group-item" href="{{url_for('course')}}">
+            <span class="material-symbols-rounded" aria-hidden="true">school</span>
+            <span class="nav-can-hide">My Courses</span>
+          </a>
+        </li>
+        <li class="nav-separator nav-can-hide"></li>
+        <li class="nav-item nav-can-hide"><a href="{{url_for('course')}}">Course</a></li>
+        <li class="nav-item nav-cut-overflow nav-can-hide"><a href="{{url_for('cardEdit')}}">Card Edit</a></li>
+      </ul>
+
+      <ul>
+        <li class="nav-item">
+          <a href="profile.html" class="nav-group-item" aria-label="profile">
+            <span class="nav-can-hide">Hello, John</span>
+            <span class="material-symbols-rounded" aria-hidden="true">account_circle</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <div id="title-card" class="accent-box">
+        <div class="content-box-sm space-before-lg">
+          <h2 class="space-after-sm">DISCOVER NEW COURSES</h2>
+          <div id="accent-search-bar">
+            <input class="content" type="text" name="search" id="search" placeholder="Search by catagory" oninput="updateSearch()" autofocus />
+            <span class="material-symbols-rounded icon" aria-hidden="true" aria-label="search">search</span>
+          </div>
+        </div>
+      </div>
+      
+      <svg class="header-transition" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="m0,50l0-50l100,0l0,50q-25,25-50,0q-25-25-50,0z" fill="var(--accent-color)" />
+      </svg>
+      
+      <div class="content-box">
+        <div id="courses" class="stackable-group">
+          <a href="course/00001" class="content content-group course" name="course" data-name="CSC 481 SENIOR PROJECT I" data-catagory="CSC" data-instructor="DR RADANA DVORAK">
+            <span class="material-symbols-rounded icon" aria-hidden="true" aria-label="computer science">terminal</span>
+            <div class="content">
+              <div class="content-group content space-after-sm">
+                <h3 class="content">CSC 481 | Senior Project I</h3>
+                <span style="white-space:nowrap">Dr. Radana Dvorak</span>
+              </div>
+              <p class="content">
+                Description goes here 
+              </p>
+            </div>
+          </a>
+          <a href="course/00001" class="content content-group course" name="course" data-name="COR 320 HOSPITALITY AND OPENNESS TO OTHERS" data-catagory="COR" data-instructor="DR CAMERON SWEET">
+            <span class="material-symbols-rounded icon" aria-hidden="true" aria-label="core">school</span>
+            <div class="content">
+              <div class="content-group content space-after-sm">
+                <h3 class="content">COR 320 | Hospitality & Openness to Others</h3>
+                <span style="white-space:nowrap">Dr. Cameron Sweet</span>
+              </div>
+              <p class="content">
+                Description goes here 
+              </p>
+            </div>
+          </a>
+          <a href="course/00001" class="content content-group course" name="course" data-name="CSC 395 ST ETHICAL HACKING" data-catagory="CSC" data-instructor="DR FARZIN BAHADORI">
+            <span class="material-symbols-rounded icon" aria-hidden="true" aria-label="computer science">terminal</span>
+            <div class="content">
+              <div class="content-group content space-after-sm">
+                <h3 class="content">CSC 395 | ST: Ethical Hacking</h3>
+                <span style="white-space:nowrap">Dr. Farzin Bahadori</span>
+              </div>
+              <p class="content">
+                Description goes here :
+              </p>
+            </div>
+          </a>
+          <a href="course/00001" class="content content-group course" name="course" data-name="LIBRARY INFORMATION LITERACY" data-catagory="NUL" data-instructor="RHIAN PETERMAN">
+            <span class="material-symbols-rounded icon" aria-hidden="true" aria-label="computer science">school</span>
+            <div class="content">
+              <div class="content-group content space-after-sm">
+                <h3 class="content">Library Information Literacy</h3>
+                <span style="white-space:nowrap">Rhian Peterman</span>
+              </div>
+              <p class="content">
+                Description goes here :
+              </p>
+            </div>
+          </a>
+          <a href="course/00001" class="content content-group course" name="course" data-name="MUS 386 COLLEGE BAND" data-catagory="ART" data-instructor="LAURA HARPER">
+            <span class="material-symbols-rounded icon" aria-hidden="true" aria-label="arts">theater_comedy</span>
+            <div class="content">
+              <div class="content-group content space-after-sm">
+                <h3 class="content">MUS 386 | College Band</h3>
+                <span style="white-space:nowrap">Laura Harper</span>
+              </div>
+              <p class="content">
+                Description goes here :
+              </p>
+            </div>
+          </a>
+        </div>
+        <div id="empty-search" class="content hidden" style="text-align: center">
+          There seems to be no courses that fit your search
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

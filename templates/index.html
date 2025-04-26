@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="charset" content="utf-8" />
+    <meta name="description" content="Raven is a reinforcement learning platform custimizable by instructors and students." />
+    <meta charset="utf-8" />
     <title>Welcome to Raven</title>
 
     <link rel="icon" type="image" href="{{url_for('static', filename='favicon-white')}}">
@@ -22,19 +26,40 @@
                 <path fill="var(--accent-text-color)" d="m125,135h-10c-3.5,0-6,2.5-6,6c0,3.5,2.5,6,6,6h35c3.25,0,6-2.75,6-6c0-3.5-2.75-6-6-6h-10.5l-10-17l12-7c9.5-6.5,16.5-15.5,19.5-26.5l9.5-35l11.5-3c3-1,5-4.5,5-6c0-2-2-5-5-6l-22.5-6c-9-3.5-19,0-24,8l-1.5,2.5c-7,10.5-12.5,13.5-12.5,13.5l-112,65c-3,1.5-4,5.5-2.5,8.5c1.5,3,5.5,4,8.5,2l71-41h33c3.5,0,6.5-2.5,6.5-6c0-3-3-6-6-6h-13l20.5-11.5c7-4.5,13-11,17-18.5l1.5-2.5c1.5-2.5,5-4,8-2.5c3,1,4.5,4.5,4,7.5l-9.5,33.5c-2,8-7.5,15-14.5,19.5l-29,17c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2l7-4zm-51.5-18c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2zm-33.5,1c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2z"></path>
               </svg>
             </span>
-            <div class="nav-main-link">Raven</div>
+            <span class="nav-main-link nav-can-hide">Raven</span>
           </a>
         </li>
-        <li class="nav-item"><a href="{{url_for('course')}}">Course</a></li>
-        <li class="nav-item"><a href="{{url_for('courseEdit')}}">Edit Course</a></li>
+        <li class="nav-item">
+          <a class="nav-group-item" href="{{url_for('discover')}}">
+            <span class="material-symbols-rounded" aria-hidden="true">explore</span>
+            <span class="nav-can-hide">Discover</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-group-item" href="{{url_for('course')}}">
+            <span class="material-symbols-rounded" aria-hidden="true">school</span>
+            <span class="nav-can-hide">My Courses</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-group-item" href="{{url_for('show_bookmarks')}}">
+            <span class="material-symbols-rounded" aria-hidden="true">bookmarks</span>
+            <span class="nav-can-hide">My Bookmarks</span>
+          </a>
+        </li>
       </ul>
 
       <ul>
-        <li class="nav-item"><a href="{{url_for('register')}}">Register</a></li>
         <li class="nav-item">
-          <a href="login.html" class="nav-group-item">
+          <a href="{{url_for('register')}}" class="nav-group-item">
+            <span class="nav-can-show material-symbols-rounded" aria-hidden="true">person_add</span>
+            <span class="nav-can-hide">Register</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url_for('login')}}" class="nav-group-item">
             <span class="material-symbols-rounded" aria-hidden="true">login</span>
-            Login
+            <span class="nav-can-hide">Login</span>
           </a>
         </li>
       </ul>
@@ -44,8 +69,8 @@
       <div id="title-card" class="accent-box">
         <div class="content-box">
           <h1>A NEW WAY TO LEARN</h1>
-          <h5>A SMU Application</h5>
-          <a href="register.html" id="register-button" class="big-link-button">Get Started</a>
+          <h5 class="space-after-lg">A SMU Application</h5>
+          <a href="{{url_for('register')}}" id="register-button" class="big-link-button">Get Started</a>
         </div>
       </div>
       
@@ -54,7 +79,7 @@
       </svg>
       
       <div class="content-box">
-        <h2 class="content">WHAT IS LIDGA?</h2>
+        <h2 class="content space-after-lg">WHAT IS LIDGA?</h2>
         <div class="content">
           <div class="long-text">
             <p>
@@ -73,7 +98,7 @@
       
       <div class="secondary-accent-box">
         <div class="content-box">
-          <h2 class="content">LEARN AT YOUR PACE</h2>
+          <h2 class="content space-after-lg">LEARN AT YOUR PACE</h2>
           <div class="content">
             <div class="long-text">
               <p>

@@ -11,6 +11,8 @@ def create_app():
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' 
     app.config['SQLALCHEMY_DATABASE_URI'] =  "postgresql://postgres:AhlamNadoosh%40%402001@localhost:5432/json_database_example"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = 'fdjrihgtuhgijrgiuer'
+    app.config['SESSION_TYPE'] = 'filesystem'
 
     db.init_app(app)  #initialize the application
     from routes import register_routes
@@ -18,13 +20,16 @@ def create_app():
 
     migrate = Migrate(app, db) #Migrating the application and database through db (database object)
 
-    from models import Card, insert_data
+    from models import Card,insert, delete_bookmarks
 
     # with app.app_context():
-        # db.create_all()
-        # db.session.query(Card).delete()
-        # db.session.commit()
-        # insert_data()
+    # #     # db.create_all()
+    # #     # db.session.query(Card).delete()
+    # #     # db.session.commit()
+    #     # db.drop_all()
+    #     # db.create_all()
+        # insert()
+        # delete_bookmarks()
     
     return app
 

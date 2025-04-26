@@ -8,21 +8,30 @@
             <path fill="var(--accent-text-color)" d="m125,135l-10,0c-3.5,0,-6,2.5,-6,6c0,3.5,2.5,6,6,6l35,0c3.25,0,6,-2.75,6,-6c0,-3.5,-2.75,-6,-6,-6l-10.5,0l-10,-17l12,-7c9.5,-6.5,16.5,-15.5,19.5,-26.5l9.5,-35l11.5,-3c3,-1,5,-4.5,5,-6c0,-2,-2,-5,-5,-6l-22.5,-6c-9,-3.5,-19,0,-24,8l-1.5,2.5c-7,10.5,-12.5,13.5,-12.5,13.5l-112,65c-3,1.5,-4,5.5,-2.5,8.5c1.5,3,5.5,4,8.5,2l71,-41l33,0c3.5,0,6.5,-2.5,6.5,-6c0,-3,-3,-6,-6,-6l-13,0l20.5,-11.5c7,-4.5,13,-11,17,-18.5l1.5,-2.5c1.5,-2.5,5,-4,8,-2.5c3,1,4.5,4.5,4,7.5l-9.5,33.5c-2,8,-7.5,15,-14.5,19.5l-29,17c-3,1.5,-4,5.5,-2.5,8.5c2,3,5.5,4,8.5,2l7,-4zm-51.5,-18c-3,1.5,-4,5.5,-2.5,8.5c2,3,5.5,4,8.5,2.5l30,-17.5c3,-1.5,4,-5.5,2.5,-8.5c-2,-3,-5.5,-4,-8.5,-2zm-33.5,1c-3,1.5,-4,5.5,-2.5,8.5c2,3,5.5,4,8.5,2.5l30,-17.5c3,-1.5,4,-5.5,2.5,-8.5c-2,-3,-5.5,-4,-8.5,-2z"></path>
           </svg>
         </span>
-        <div class="nav-main-link">Raven</div>
+        <div class="nav-main-link nav-can-hide">Raven</div>
       </a>
     </li>
     <li class="nav-item">
-      <a href="{{url_for('course')}}" class="nav-group-item">
-        <span class="material-symbols-rounded" aria-hidden="true">dashboard</span>
-        <div class="nav-main-link">Courses</div>
+      <a class="nav-group-item" href="{{url_for('discover')}}">
+        <span class="material-symbols-rounded" aria-hidden="true">explore</span>
+        <span class="nav-can-hide">Discover</span>
       </a>
     </li>
     <li class="nav-item">
-      <a href="courses.html" class="nav-group-item">
+      <a class="nav-group-item" href="{{url_for('course')}}">
+        <span class="material-symbols-rounded" aria-hidden="true">school</span>
+        <span class="nav-can-hide">My Courses</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{url_for('show_bookmarks')}}" class="nav-group-item">
         <span class="material-symbols-rounded" aria-hidden="true">bookmarks</span>
         <div class="nav-main-link">Bookmarks</div>
       </a>
     </li>
+    <li class="nav-separator nav-can-hide"></li>
+    <li class="nav-item nav-active nav-can-hide"><a href="{{url_for('course')}}">Course</a></li>
+    <li class="nav-item nav-cut-overflow nav-can-hide"><a href="{{url_for('cardEdit')}}">Card Edit</a></li>
   </ul>
 
   <ul>

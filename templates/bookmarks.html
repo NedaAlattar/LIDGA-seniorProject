@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+  {% include "head.html" %} 
+
+  <body>
+    {% include "navbar.html" %}
+
+    <main>
+        <div class="content">
+        <div class="question">
+            <form id="question" method="POST"  action="">
+                <fieldset>
+                    {% if data %}
+                      <ul>
+                        {% for choice in data %}
+                          <li name="choice" value="{{ loop.index0 }}">
+                            <a href="{{ url_for('course_next', card_id=choice.id) }}">{{ choice.name}}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </fieldset>            
+            </form>
+        </div>
+        </div>
+    </main>
+  </body>
+</html>

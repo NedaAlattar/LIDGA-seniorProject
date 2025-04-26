@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>What is the building pictured? | Raven</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="charset" content="utf-8" />
+    <meta charset="utf-8" />
+    <title>CSC 481 | Senior Project I | Raven</title>
 
-    <link rel="icon" type="image" href="{{url_for('static', filename='favicon-white')}}" />
+    <link rel="icon" type="image" href="{{url_for('static', filename='favicon-white')}}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='consts.css')}}" />
     
-    <script src="{{url_for('static', filename='course-edit.js')}}"></script>
-
+    <script src="{{ url_for('static', filename='course-edit.js') }}" defer></script>
 
     <!-- Import Google Material Symbols from Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -25,27 +27,31 @@
                 <path fill="var(--accent-text-color)" d="m125,135h-10c-3.5,0-6,2.5-6,6c0,3.5,2.5,6,6,6h35c3.25,0,6-2.75,6-6c0-3.5-2.75-6-6-6h-10.5l-10-17l12-7c9.5-6.5,16.5-15.5,19.5-26.5l9.5-35l11.5-3c3-1,5-4.5,5-6c0-2-2-5-5-6l-22.5-6c-9-3.5-19,0-24,8l-1.5,2.5c-7,10.5-12.5,13.5-12.5,13.5l-112,65c-3,1.5-4,5.5-2.5,8.5c1.5,3,5.5,4,8.5,2l71-41h33c3.5,0,6.5-2.5,6.5-6c0-3-3-6-6-6h-13l20.5-11.5c7-4.5,13-11,17-18.5l1.5-2.5c1.5-2.5,5-4,8-2.5c3,1,4.5,4.5,4,7.5l-9.5,33.5c-2,8-7.5,15-14.5,19.5l-29,17c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2l7-4zm-51.5-18c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2zm-33.5,1c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2z" />
               </svg>
             </span>
-            <div class="nav-main-link">Raven </div>
+            <div class="nav-main-link nav-can-hide">Raven</div>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ url_for('course') }}" class="nav-group-item">
-            <span class="material-symbols-rounded" aria-hidden="true">dashboard</span>
-            <div class="nav-main-link">Courses</div>
+          <a class="nav-group-item" href="discover.html">
+            <span class="material-symbols-rounded" aria-hidden="true">explore</span>
+            <span>Discover</span>
           </a>
         </li>
-        <li class="nav-item nav-active">
-          <a href="{{ url_for('courseEdit') }}" class="nav-group-item">
-            <span class="material-symbols-rounded" aria-hidden="true">edit</span>
-            <div class="nav-main-link">Edit Card</div>
+        <li class="nav-item">
+          <a class="nav-group-item" href="{{url_for('myCourses')}}">
+            <span class="material-symbols-rounded" aria-hidden="true">school</span>
+            <span>My Courses</span>
           </a>
         </li>
+        <li class="nav-separator nav-can-hide"></li>
+        <li class="nav-item nav-can-hide"><a href="{{url_for('course')}}">Course</a></li>
+        <li class="nav-item nav-cut-overflow nav-active nav-can-hide"><a href="{{url_for('courseEdit')}}">Course Edit</a></li>       
+        <li class="nav-item"><a href="{{url_for('cardEdit')}}">Edit card</a></li>
       </ul>
 
       <ul>
         <li class="nav-item">
           <a href="profile.html" class="nav-group-item" aria-label="profile">
-            Hello, John
+            <span class="nav-can-hide">Hello, John</span>
             <span class="material-symbols-rounded" aria-hidden="true">account_circle</span>
           </a>
         </li>
@@ -62,226 +68,146 @@
           </div>
 
           <div class="content">
-            <div class="content-group">
-              <h3 class="content">CSC 481 | Senior Project I | Unit 1</h3>
-              <button onClick="save()" type="submit">Save</button>
-              <button class="button-icon icon" aria-label="copy card">
-                <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
-              </button>
-              <button class="button-icon icon" aria-label="delete card">
-                <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-              </button>
+            <div class="content-group space-after-med">
+              <span class="material-symbols-rounded icon" aria-hidden="true" id="course-icon">terminal</span>
+              <input type="text" class="heading-text content" value="CSC 481 | Senior Project I" placeholder="Course name" />
+              </div>
+
+              <div class="content stackable-group space-after-lg">
+                <div class="content">
+                  <div class="content-group center-up-down">
+                    <label for="course-catagory">Catagory</label>
+                    <select name="course-catagory" id="course-catagory" onchange="updateCourseIcon()">
+                      <option value="OTH">Other</option>
+                      <option value="ART">Arts</option>
+                      <option value="COR">Core</option>
+                      <option value="TEC" selected>Technology</option>
+                      <option value="GE ">Engineering</option>
+                      <option value="ENG">English</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="content">
+                  <h4 class="space-after-sm">Description</h4>
+                  <div class="content grow-wrap">
+                    <textarea onInput="this.parentNode.dataset.replicatedValue = this.value;" placeholder="Description"></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="content">
+  
+                <div class="content content-group">
+                  <input class="content heading-text space-after-med" type="text" placeholder="Chapter name" value="Chapter 1" />
+                  <button aria-label="delete card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
+                  </button>
+                </div>
+                
+                <div class="content content-group space-after-med">
+                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">help_center</span>
+                  <h3 class="content">What Building Is Pictu...</h3>
+                  <a href="0001.html" aria-label="edit card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+                  </a>
+                  <button aria-label="copy card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
+                  </button>
+                  <button aria-label="delete card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
+                  </button>
+                  <button aria-label="move card up" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
+                  </button>
+                  <button aria-label="move card down" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
+                  </button>
+                </div>
+                
+                <div class="content content-group space-after-med">
+                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">sticky_note_2</span>
+                  <h3 class="content">What Building Is Pictu...</h3>
+                  <a href="" aria-label="edit card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+                  </a>
+                  <button aria-label="copy card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
+                  </button>
+                  <button aria-label="delete card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
+                  </button>
+                  <button aria-label="move card up" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
+                  </button>
+                  <button aria-label="move card down" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
+                  </button>
+                </div>
+                
+                
+                <div class="content content-group space-after-med">
+                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">image</span>
+                  <h3 class="content">What Building Is Pictu...</h3>
+                  <a href="" aria-label="edit card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+                  </a>
+                  <button aria-label="copy card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
+                  </button>
+                  <button aria-label="delete card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
+                  </button>
+                  <button aria-label="move card up" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
+                  </button>
+                  <button aria-label="move card down" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
+                  </button>
+                </div>
+  
+                <div class="content content-group">
+                  <input class="content heading-text space-after-med" type="text" placeholder="Chapter name" value="Chapter 2" />
+                  <button aria-label="delete card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
+                  </button>
+                </div>
+                
+                <div class="content content-group space-after-med">
+                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">article</span>
+                  <h3 class="content">What Building Is Pictu...</h3>
+                  <a href="" aria-label="edit card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+                  </a>
+                  <button aria-label="copy card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
+                  </button>
+                  <button aria-label="delete card" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
+                  </button>
+                  <button aria-label="move card up" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
+                  </button>
+                  <button aria-label="move card down" class="button-icon icon">
+                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
+                  </button>
+                </div>
+                <div id="add-content">
+                <button>
+                  <span class="material-symbols-rounded" aria-hidden="true" aria-label="add card">Add</span>
+                  <span>Add card</span>
+                </button>
+              </div>
+  
+              </div>
             </div>
             
-            <div class="content">
-              <div id="card-tags">
-                <div class="tag">Buildings</div>
-              </div>
-              
-              <button class="button-icon icon" aria-label="add tag">
-                <span class="material-symbols-rounded" aria-hidden="true">add_circle</span>
-              </button>
+            <div>
+              <a href="{{url_for('course_next')}}" class="link-icon icon" aria-label="next">
+                <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+              </a>
             </div>
-          
-            <div id="content-wrap">
-              <div class="content">
-                <div class="content-group">
-                  <div class="icon" aria-label="heading">
-                    <span class="material-symbols-rounded" aria-hidden="true">format_h1</span>
-                  </div>
-                  <input class="content heading-text" type="text" placeholder="Heading" id="header" />
-                  <button class="button-icon icon" aria-label="more">
-                    <span class="material-symbols-rounded" aria-hidden="true">more_horiz</span>
-                  </button>
-                </div>
-              </div>
-              
-              <div class="content">
-                <div class="content-group">
-                  <div class="icon" aria-label="image">
-                    <span class="material-symbols-rounded" aria-hidden="true">image</span>
-                  </div>
-                  
-                  <div class="content">
-                    <div class="content-group">
-                      <div class="icon" aria-label="upload image">
-                        <span class="material-symbols-rounded" aria-hidden="true">upload</span>
-                      </div>
-
-                      <span class="content">greenhouse.jpg</span>
-                      
-                      <button class="button-icon icon" aria-label="justify image left">
-                        <span class="material-symbols-rounded" aria-hidden="true">format_image_left</span>
-                      </button>
-                      
-                      <button class="button-icon icon" aria-label="justify image center">
-                        <svg width="24px" height="24px" viewBox="0 0 960 960" xmlns="http://www.w3.org/2000/svg">
-                          <path fill="var(--body-text-color)"d="M320,680q-17,0-28.5-11.5t-11.5-28.5v-320q0-17,11.5-28.5t28.5-11.5h320q17,0,28.5,11.5t11.5,28.5v320q0,17-11.5,28.5t-28.5,11.5h-320zm40-80h240v-240h-240v240zm-200-400q-17,0-28.5-11.5t-11.5-28.5q0-17,11.5-28.5t28.5-11.5h640q17,0,28.5,11.5t11.5,28.5q0,17-11.5,28.5t-28.5,11.5h-640zm0,640q-17,0-28.5-11.5t-11.5-28.5q0-17,11.5-28.5t28.5-11.5h640q17,0,28.5,11.5t11.5,28.5q0,17-11.5,28.5t-28.5,11.5h-640z" />
-                        </svg>
-                      </button>
-                      
-                      <button class="button-icon icon" aria-label="justify image right">
-                        <span class="material-symbols-rounded" aria-hidden="true">format_image_right</span>
-                      </button>
-                      
-                      <button class="button-icon icon" aria-label="more">
-                        <span class="material-symbols-rounded" aria-hidden="true">more_horiz</span>
-                      </button>
-                    </div>
-
-                    <div class="stackable-group">
-                      <div class="content image" id="image0">
-                        <img src="{{ url_for('static', filename='greenhouse.jpg')}}" alt="" />
-                        <div class="description hidden" id="image0-description"></div>
-                      </div>
-                      <div class="content">
-                        <h4 class="content">Image Description</h4>
-                        <div class="content grow-wrap">
-                          <textarea onInput="this.parentNode.dataset.replicatedValue = this.value; updateImageAlt('image0');" placeholder="Description" id="image0-input"></textarea>
-                        </div>
-                        <div class="content">
-                          <div class="form-row center-up-down">
-                            <label class="choice-input center-up-down" name="alt-input" id="image0-switch">
-                              <input onchange="updateAltIcons()" type="checkbox" />
-                              <span class="material-symbols-rounded icon button-icon" aria-hidden="true">toggle_off</span>
-                              <span>Show description on card</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="content">
-                <div class="content-group">
-                  <div class="icon" aria-label="quiz">
-                    <span class="material-symbols-rounded" aria-hidden="true">help_center</span>
-                  </div>
-                  
-                  <div class="content">
-                    <div class="content-group">
-                      <input type="text" class="content heading-text" id="question-header" placeholder="Question" />
-                      <button class="button-icon icon" aria-label="more">
-                        <span class="material-symbols-rounded" aria-hidden="true">more_horiz</span>
-                      </button>
-                    </div>
-
-                    <div class="stackable-group">
-                      <div class="content">
-                        <div class="question">
-                          <form id="question">
-                            <div id="choices">
-                              <div class="form-row center-up-down">
-                                <label class="choice-input" name="choice-input">
-                                  <input onchange="updateIcons()" type="radio" id="choice0" name="question0" />
-                                  <span class="material-symbols-rounded icon button-icon" aria-hidden="true">radio_button_unchecked</span>
-                                </label>
-                                <input type="text" id="choice0-lable" placeholder="Option" />
-                              </div>
-                              
-                              <div class="form-row center-up-down">
-                                <label class="choice-input" name="choice-input">
-                                  <input onchange="updateIcons()" type="radio" id="choice1" name="question0" />
-                                  <span class="material-symbols-rounded icon button-icon" aria-hidden="true">radio_button_unchecked</span>
-                                </label>
-                                <input type="text" id="choice1-lable" placeholder="Option" />
-                              </div>
-                              
-                              <div class="form-row center-up-down">
-                                <label class="choice-input" name="choice-input">
-                                  <input onchange="updateIcons()" type="radio" id="choice2" name="question0" />
-                                  <span class="material-symbols-rounded icon button-icon" aria-hidden="true">radio_button_unchecked</span>
-                                </label>
-                                <input type="text" id="choice2-lable" placeholder="Option" />
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                      
-                      <div class="content">
-                        <div class="form-row center-up-down">
-                          <label for="question-type">Question type</label>
-                          <select name="question-type" id="question-type" onchange="changeQuestionType()">
-                            <option value="select-one">Select one</option>
-                            <option value="select-many">Select many</option>
-                          </select>
-                        </div>
-                        <div class="form-row range-label">
-                          <span>Introductory</span>
-                          <span>Advanced</span>
-                        </div>
-                        <div class="form-row">
-                          <div class="range-wrap">
-                            <input type="range" name="difficulty" id="difficulty" aria-label="difficulty" />
-                            <div class="range-dot-wrap" id="difficulty-range-dots"></div>
-                            <script>addSliderDots()</script>
-                          </div>
-                        </div>
-                        <!--<div class="form-row">
-                          <label class="choice-input center-up-down" name="link-header" id="question0-switch">
-                            <input onchange="updateQuestionHeader()" type="checkbox" />
-                            <span class="material-symbols-rounded icon button-icon" aria-hidden="true">toggle_off</span>
-                            <span>Link question to card header</span>
-                            <script>updateQuestionHeader()</script>
-                          </label>
-                        </div>-->
-                      </div>
-                    </div>
-                    
-                    <div class="content">
-                      <h4 class="content">Incorrect</h4>
-                      <div class="content grow-wrap">
-                        <textarea onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Incorrect answer prompt"></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="content">
-                <div class="content-group">
-                  <div class="icon" aria-label="text">
-                    <span class="material-symbols-rounded" aria-hidden="true">article</span>
-                  </div>
-                  <div class="content grow-wrap">
-                    <textarea onInput="this.parentNode.dataset.replicatedValue = this.value; updateImageAlt('image0');" placeholder="Text"></textarea>
-                  </div>
-                  <button class="button-icon icon" aria-label="more">
-                    <span class="material-symbols-rounded" aria-hidden="true">more_horiz</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="content">
-              <button class="button-icon icon" onClick="addHeader()" aria-label="add header">
-                <span class="material-symbols-rounded" aria-hidden="true">format_h1</span>
-              </button>
-              <button class="button-icon icon" onClick="addText()" aria-label="add text">
-                <span class="material-symbols-rounded" aria-hidden="true">article</span>
-              </button>
-              <button class="button-icon icon" onClick="addQuestion()" aria-label="add question">
-                <span class="material-symbols-rounded" aria-hidden="true">help_center</span>
-              </button>
-              <button class="button-icon icon" onClick="addFlashCard()" aria-label="add flash card">
-                <span class="material-symbols-rounded" aria-hidden="true">sticky_note_2</span>
-              </button>
-              <button class="button-icon icon" onClick="addMedia()" aria-label="add media">
-                <span class="material-symbols-rounded" aria-hidden="true">image</span>
-              </button>
-            </div>
-          </div>
-          
-          <div>
-            <a href="course_next.html" class="link-icon icon" aria-label="next">
-              <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
-            </a>
           </div>
         </div>
-      </div>
-    </main>
-  </body>
-</html>
+      </main>
+    </body>
+  </html>

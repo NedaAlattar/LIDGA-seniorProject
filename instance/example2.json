@@ -5,11 +5,11 @@
     "content": [
         {
             "type": "header",
-            "value": "♫ Look at this photograph ♫"
+            "content": "♫ Look at this photograph ♫"
         },
         {
             "type": "image",
-            "value": "greenhouse.jpg"
+            "content": "greenhouse.jpg"
         },
         {
             "type": "long-text",

@@ -1,21 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Kameron:wght@400..700&display=swap');
 
+/** LIGHT MODE *********************************/
+
 :root {
     /** SPACING, WIDTHS, & BORDER RADI *********/
 
     --space-v-sm       : 5px;
     --space-sm         : 10px;
     --space-med        : 20px;
-    --space-lg         : 30px;
+    --space-lg         : 35px;
     --space-v-lg       : 60px;
                        
     --button-width     : 150px;
     --body-width       : 1200px;
+    --body-width-sm    : 800px;
     --content-width    : 400px;
     --icon-button-width: 35px;
     --transition-height: 150px;
     --nav-line-width   : 4px;
     --line-width       : 2px;
+    --nav-cut-overlap-max-width: 10em;
+    --input-height     : 30px;
 
     --radius-sm        : 5px;
     --radius-med       : 10px;
@@ -34,11 +39,13 @@
 
     --secondary-accent-color         : #A2C4C8;
     --secondary-accent-element-color : #76A5AF;
-    --secondary-acccent-text-color   : #000;
+    --secondary-accent-text-color    : #000;
 
     --element-color                  : #EEE;
     --element-element-color          : #999;
     --element-text-color             : #000;
+    --placeholder-text-color         : #999;
+    --accent-placeholder-text-color  : #DDD;
 
     --bookmark-saved-color           : #CC4227;
 
@@ -78,4 +85,36 @@
     
     --code-font     : "Courier Prime", monospace, "Kameron", slab-serif, serif;
     --code-font-size: 12pt;
+}
+
+/** DARK MODE **********************************/
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /** COLORS *****************************/
+
+        --body-color                     : #182224;
+        --body-element-color             : #343E40;
+        --body-text-color                : #FFF;
+
+        --accent-color                   : #851F0B;
+        --accent-element-color           : #A61C00;
+        --accent-text-color              : #FFF;
+
+        --secondary-accent-color         : #135969;
+        --secondary-accent-element-color : #3C7480;
+        --secondary-accent-text-color    : #FFF;
+
+        --element-color                  : #343E40;
+        --element-element-color          : #B7B7B7;
+        --element-text-color             : #FFF;
+        --placeholder-text-color         : #B7B7B7;
+
+        --bookmark-saved-color           : #A61C00;
+
+        --incorrect-color                : #851F0B;
+        --incorrect-shadow-color         : #A61C00;
+        --correct-color                  : #38761B;
+        --correct-shadow-color           : #69A84F;
+    }
 }

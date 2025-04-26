@@ -1,124 +1,347 @@
-from flask import render_template, request, session, redirect, url_for
+from flask import render_template, request, session, redirect, url_for, jsonify
 import json, base64, random
-from models import  Card
-from sqlalchemy import update, select
-
-
-# def load_json_data():
-#     with open('C:/SeniorCapstone/instance/data_base64.json', 'r') as file:
-#         data = json.load(file) #this returns an obj. 
-
-#         return data   
-
+from models import  Card, Bookmark
+from sqlalchemy import update, select  
+     
 def decode_base64(value):
     try:
         return base64.b64decode(value).decode("utf-8")
     except (base64.binascii.Error, UnicodeDecodeError):
         return value  
 
-def decode_json_content(json_data):
-    if isinstance(json_data, dict):
-        return {key: decode_json_content(value) for key, value in json_data.items()}
-    elif isinstance(json_data, list):
-        return [decode_json_content(value) for value in json_data]
-    elif isinstance(json_data, str):
-        return decode_base64(json_data)
+def isBase64(json_):
+    try:
+        if isinstance(json_, dict):
+            return {key: isBase64(value) for key, value in json_.items()}
+        elif isinstance(json_, list):
+            return [isBase64(value) for value in json_]
+        elif isinstance(json_, str):
+            return decode_base64(json_)
+        elif isinstance(json_, int):
+            return json_
+
+    except (json.JSONDecodeError, ValueError) as e:
+        return {"error": f"Invalid JSON input: {str(e)}"}
     
-def generate_content(json_data):
-    # json_data = json.load(card)
-    decoded_content = decode_json_content(json_data)
-    print(f"decoded content: {decoded_content}")
-    print(f"type of decoded content {type(decoded_content)}")
-    # return decoded_content.get('content', [])
+def generate_content(json_file):
+    decoded_content = isBase64(json_file)
     return decoded_content
 
+def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
 
-def generate_Cards(card_data={}):
-    data = generate_content(card_data)  # Extract 'content' dict
-    print(f"type of decoded data: {type(data)}")
-    name = data.get("name", "")
-    type_ = data.get("type", "")
-    chapter = str(data.get("chapter", ""))
+    action_url = url_for('checkAnswer')
+    json_path1 = url_for('static', filename='radio-button.js')
+    json_path2 = url_for('static', filename='checkBox-button.js')
+    img_description = " No description is provided"
+    html_fragment = ""
+    html_fragment_list = []
+    content = generate_content(card)
+    incorrect_txt =  get_incorrect_text(content)
 
-    img = None
-    mulChoice = None
-    header = None
-    difficulty = getDiffuclty(data)  
-    print(f"difficulty is  {difficulty}")
-    shuffle = None
-    incorrect_text = "Wrong Answer! but no explanation is provided"
-    long_text = ""
-    select_all_choice = None
-
-    for item in data["content"]:
+    for item in content.get('content', []):
         match item.get("type"):
             case "header":
-                header = item.get("value")
+                headers = getHeaders(content)
+                for header in headers:
+                    html_fragment += f'''
+                    <h3 class="content space-after-lg"> {header} </h3>'''
 
-            case "stackable":
-                for sub_item in item.get("content", []):
-                    match sub_item.get("type"):
-                        case "image":
-                            img = sub_item.get("value")
-                        case "response_multiple_choice":
-                            mulChoice = sub_item.get("content")
-                        case "long-text":
-                            long_text = sub_item.get("content", sub_item.get("value"))
-                            if isinstance(long_text, list) and long_text:
-                                long_text = " ".join(long_text)
-                        case "response_select_all_choice":
-                            select_all_choice = sub_item.get("content")
+            case 'image':
+                images = getImage(content)
+                for img in images:
+                    image_path = url_for('static', filename=img)
+                    html_fragment += f''' 
+                    <div class="stackable-group space-after-lg">
+                    <div class="content image">
+                        <img src="{image_path}" alt="A glass room with a lot of flowers and plants." />
+                        <div class="description" id="image0-description">{img_description}</div>
+                    </div>
+                    </div>
+                    '''
 
-            case "question_incorrect":
-                incorrect_text = item.get("value")
+            case 'response_multiple_choice':
+                mulChoice = get_multipleChoice(content)
+                html_fragment +=f''' 
+                <div class="content">
+                    <div class="question">
+                        <form id="question" method="POST" action="{action_url}">
+                          <fieldset>
+                    <script src="{json_path1}" defer></script>'''    
+                       
+                for i, choices in enumerate(mulChoice):
+                    for j, choice in enumerate(choices):
+                        html_fragment += f'''
+                            <div class="form-row">
+                            <label for="multiple-option{j}" class="choice-input center-up-down" name="choice-input">
+                                <input onchange="updateIcons()" type="radio" id="multiple-option{j}" name="choice" value="{j}" />
+                                <span class="material-symbols-rounded icon" aria-hidden="true">radio_button_unchecked</span>
+                                <span>{choice}</span>
+                            </label>
+                            </div>'''
+                        
+                html_fragment += f'''
+                            <div class="submit-row">
+                                <button type="reset">
+                                <span class="can-hide-450">Clear</span>
+                                    <span class="material-symbols-rounded" aria-hidden="true">close</span>
+                                </button>
+                                <button type="submit">Submit</button>
+                            </div>                 
+                            </fieldset>
+                        </form>
+                            <script>
+                                window.onload = function() {{
+                                    let isCorrect = "{ isCorrect }"; 
 
-    print(f"Card Name: {name}, Type: {type_}, Chapter: {chapter}, "
-      f"Header: {header}, Image: {img}, Multiple Choice: {mulChoice}, "
-      f"Difficulty: {difficulty}, Shuffle: {shuffle}, "
-      f"Question Incorrect: {incorrect_text}, Long Text: {long_text}, "
-      f"Response Select All Choice: {select_all_choice}")
+                                    if (isCorrect === "True") {{
+                                        document.getElementById("correctMessage").style.display = "block";
+                                        document.getElementById("incorrectMessage").style.display = "none";
+                                    }} else if (isCorrect === "False") {{
+                                        document.getElementById("correctMessage").style.display = "none";
+                                        document.getElementById("incorrectMessage").style.display = "block";
+                                    }} else {{
+                                        document.getElementById("correctMessage").style.display = "none";
+                                        document.getElementById("incorrectMessage").style.display = "none"; 
+                                    }}
+                                }};
+                            </script>
+                        </div>
+                    </div>'''
+                
+            case 'response_select_all_choice':
+                select_all_choice = get_select_all_apply(content)
+                html_fragment += f''' 
+                        <div class="content">
+                            <div class="question">
+                                <form id="question" method="POST" action="{action_url}">
+                                    <fieldset>
+                                    <script src="{json_path2}" defer></script>'''    
+
+                for i, choices in enumerate(select_all_choice):
+                    for j, choice in enumerate(choices):
+                        html_fragment += f'''  
+                            <div class="form-row">
+                            <label for="selectall-option{j}" class="choice-input center-up-down" name="choice-input">
+                                <input type="checkbox" id="selectall-option{j}" name="choice" value="{j}" />
+                                <span class="material-symbols-rounded icon" aria-hidden="true">check_box_outline_blank</span>
+                                <span>{choice}</span>
+                            </label>
+                            </div>'''
+                        
+                html_fragment += f'''
+                    <div class="submit-row">
+                        <button type="reset">
+                            Clear
+                            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+                        </button>
+                        <button type="submit">Submit</button>
+                    </div>
+                    </fieldset>
+                    </form>
+                    <script>
+                        window.onload = function() {{
+                            let isCorrect = "{ isCorrect }"; 
+
+                            if (isCorrect === "True") {{
+                                document.getElementById("correctMessage").style.display = "block";
+                                document.getElementById("incorrectMessage").style.display = "none";
+                            }} else if (isCorrect === "False") {{
+                                document.getElementById("correctMessage").style.display = "none";
+                                document.getElementById("incorrectMessage").style.display = "block";
+                            }} else {{
+                                document.getElementById("correctMessage").style.display = "none";
+                                document.getElementById("incorrectMessage").style.display = "none"; 
+                            }}
+                        }};
+                    </script>
+                </div>
+            </div>'''  
+
+            case "incorrect":
+                incorrect_txt = get_incorrect_text(content)
+                for txt in incorrect_txt:
+                    html_fragment += f''' 
+                    <div class="content space-after-lg" style="display: none;" id="incorrectMessage">
+                        <h3 class="content space-after-sm" style="color: red;"> Incorrect </h3> 
+                        <div class="content">
+                            <p>{ txt }</p>
+                        </div>
+                    </div>'''  
+
+            case "long-text":
+                long_txt = get_long_text(content)
+                for txts in long_txt:
+                    for txt in txts:
+                        html_fragment += f'''               
+                        <div class="long-text">
+                            <p id="longText">
+                                { txt }
+                            </p>              
+                        </div>'''  
     
-    return {
-        "name": name,
-        "type": type_,
-        "chapter": chapter,
-        "header": header,
-        "image": img,
-        "multiple_choice": mulChoice,
-        "difficulty": difficulty,
-        "shuffle": shuffle,
-        "question_incorrect": incorrect_text,
-        "long-text": long_text,
-        "response_select_all_choice": select_all_choice
-    } 
+    html_fragment_list.append(html_fragment)
+    return html_fragment_list
 
-def getShuffle():
-    content_list = generate_content()
-    for item in content_list:
-        if item.get('type') == "stackable":
-            for sub_item in item.get('content', []):
-                isShuffle = str(sub_item.get('shuffle')) 
+# def generate_cards_data(card_data={}):
+#     data = generate_content(card_data)  # Extract 'content' dict
+#     print(f"generated cards from generate_content: {data}")
 
-    return isShuffle  
-  
+#     id=data.get('id',"")
+#     name = data.get("name", "")
+#     type_ = data.get("type", "")
+#     chapter = str(data.get("chapter", ""))
+
+#     img = getImage(data)
+#     mulChoice = get_multipleChoice(data)
+#     header = getHeaders(data)
+#     difficulty = getDiffuclty(data)  
+#     shuffle = getShuffle(data)
+#     incorrect_text = get_incorrect_text(data)
+#     long_text = get_long_text(data)
+#     select_all_choice = get_select_all_apply(data)
+#     correct_value = getCorrectValue(data)
+
+#     # print(f"Card Name: {name}, Type: {type_}, Chapter: {chapter}, "
+#     #   f"Header: {header}, Image: {img}, Multiple Choice: {mulChoice}, "
+#     #   f"Difficulty: {difficulty}, Shuffle: {shuffle}, "
+#     #   f"Question Incorrect: {incorrect_text}, Long Text: {long_text}, "
+#     #   f"Response Select All Choice: {select_all_choice},")
+    
+#     return {
+#         "id" : id,
+#         "name": name,
+#         "type": type_,
+#         "chapter": chapter,
+#         "header": header,
+#         "image": img,
+#         "multiple_choice": mulChoice,
+#         "difficulty": difficulty,
+#         "shuffle": shuffle,
+#         "question_incorrect": incorrect_text,
+#         "long-text": long_text,
+#         "correct_value": correct_value,
+#         "response_select_all_choice": select_all_choice,
+#         "json_card": data
+#     } 
+
+def get_id(content_list):
+    data = generate_content(content_list)
+    id = data.get('id')
+
+    return id if id else None
+
+def get_incorrect_text(content_list):
+    incorrect_texts = []
+    try:
+        for item in content_list.get('content', []):
+            if item.get('type') == 'incorrect':
+                incorrect_texts.append(item.get('content'))
+    except Exception as e:
+        print(e)
+
+    return incorrect_texts
+        
+def get_long_text(content_list):
+    long_texts = []
+    try:
+        content = content_list.get('content', [])
+        if isinstance(content, str):
+            long_texts.append(content)
+        elif isinstance(content, list):
+            for item in content:
+                if item.get('type') == 'long-text':
+                    long_texts.append(item.get("content"))
+            
+    except Exception as e:
+        print(e)
+    
+    return long_texts
+
+def get_select_all_apply(content_list):
+    select_all_choice = []
+    try:
+        for item in content_list.get('content', []):
+            if item.get('type') == 'response_select_all_choice':
+                select_all_choice.append(item.get("content"))
+            
+    except Exception as e:
+        print(e)
+
+    return select_all_choice
+
+def get_multipleChoice(content_list):
+    mulChoice = []
+    try:
+        for item in content_list.get('content', []):
+            if item.get('type') == 'response_multiple_choice':
+                mulChoice.append(item.get("content"))
+            
+    except Exception as e:
+        print(e)
+
+    return mulChoice
+
+def getImage(content_list):
+    images = []
+    try:
+        for item in content_list.get('content', []):
+            if item.get('type') == 'image':
+                images.append(item.get("content"))
+            
+    except Exception as e:
+        print(e)
+    
+    return images
+
+def getHeaders(content_list):
+    headers = []
+    try:
+        for item in content_list.get('content', []):
+            if item.get('type') == 'header':
+                headers.append(item.get("content"))
+            
+    except Exception as e:
+        print(e)
+
+    return headers
+ 
+def getShuffle(content_list):
+    try:
+        for item in content_list.get("content", []):
+                if "shuffle" in item:
+                    return str(item['shuffle'])
+    
+    except Exception as e:
+        print("This card doesn't have a shuffle value:", e)
+    return None  
+
 def getCorrectValue(content_list):
-    # content_list = generate_content()
-    for item in content_list:
-        if item.get('type') == "stackable":
-            for sub_item in item.get('content', []):
-                correctValue = sub_item.get('correct')
+    # correct_values = []
+    print(content_list.get('content'))
+    try:
+        for item in content_list.get('content',[]):
+            if 'correct' in item:
+                return item['correct']
+                    # correct_values.append(item['correct']) 
+    
+    except Exception as e:
+        print(e)
 
-    return correctValue  
+    return None
+    # print(f"type of correct-values is: {type(correct_values)}")
+    # print(f"correct_values are: {correct_values}")
+    # return correct_values
 
 def getDiffuclty(content_list):
-    # content_list = generate_content()
-    print(f"content list: {content_list}")
-    print(f"type of content list is {type(content_list)}")
-    for item in content_list["content"]:
-        if item.get('type') == "stackable":
-            for sub_item in item.get('content', []):
-                diffuclty = str(sub_item.get('diffuclty')) 
-    return diffuclty
+    try:
+        for item in content_list.get('content'):
+            if 'diffuclty' in item:
+                    return item['diffuclty'] 
+    
+    except Exception as e:
+        print("This card doesn't have a diff value:", e)
+
+    return None
 
 def generateDeck(cards =[], prob=0.4):
     deck=[]
@@ -129,34 +352,98 @@ def generateDeck(cards =[], prob=0.4):
 
     return deck
 
-def register_routes(app,db):
+def get_current_card():
+    if 'card' not in session:
+        return None
     
+    card = session['card']
+    card_id = card.get('id') ## we have to have an id in every json file. 
+    print(f"card title is {card_id}")
+    card_cur = Card.query.filter_by(id=card_id).first() ##this is an object of type Card.
+    return card_cur
+
+def get_current_user():
+    if 'user' not in session:
+        return None
+    ## do sth if found (like return the id)
+
+def register_routes(app,db):
+
+    @app.route('/bookmark', defaults={'card_id': None}, methods=['GET', 'POST'])
+    @app.route('/bookmark/<int:card_id>', methods=["POST", 'GET']) 
+    def save_bookmark(card_id):
+        card = session.get('card')
+        card_id = card.get('id')
+        print(f"card_id in the bookmark route: {card_id}")
+        exists = db.session.query(Bookmark.query.filter(Bookmark.card_id == card_id).exists()).scalar()
+        if exists:
+            isBooked = True
+        else:
+            isBooked = False
+        print(f'does it exist?: {exists}')
+
+        if card_id:
+            if isBooked == False:
+                bookmark = Bookmark(card_id=card_id, card=card)
+                bookmark.insert()
+
+            elif isBooked == True:
+                Bookmark.un_bookmark(card_id)
+
+        session['isBooked'] = isBooked
+        return redirect(url_for('course_next', card_id=card_id))
+    
+    @app.route('/show_bookmarks', methods=['GET','POST'])
+    def show_bookmarks():
+        all_bookmarks = Bookmark.get_all_bookmarks()
+        return render_template('bookmarks.html', data=all_bookmarks)
+
     @app.route('/')
     def index():
         return render_template('index.html')  
     
+    @app.route('/card-edit')
+    def card_edit():
+        return render_template('card-edit.html')  
+
+    # @app.route('/show_bookedCard', defaults={'card_id': None}, methods=['GET', 'POST'])
+    # @app.route('/show_bookedCard/<int:card_id>', methods=["POST", 'GET'])
+    # def show_bookedCard():
+    #     isCorrect = "False"
+    #     isBooked = "True"
+    #     selected_cardId = request.form.get('value') ##card Id from the form
+    #     card = db.session.query(Card).filter_by(id=selected_cardId).first()
+    #     print(f"type of card in the show_bookmarks route: {type(card)}")
+    #     displayed_card = generate_cards_html_content(card=card, isCorrect=isCorrect, isBooked=isBooked)
+
+    #     return render_template('course_next.html', next_card=displayed_card, card_id=selected_cardId)
+
     @app.route('/checkAnswer', methods=['GET', 'POST'])
+    # @app.route('/checkAnswer/<isCorrect>', methods=['GET', 'POST'])
     def checkAnswer(): 
         isCorrect = "False"
-        data = generate_content()
-        correctValue = getCorrectValue(data) #returns a list of intergers 
+        card = session.get('card')
+        # card_id = card.get('id')
+        # correctValue = card.get('correct') 
+        correctValue = getCorrectValue(card)
+        print(f"card in the check answer route: {card}")
+        print(f"correct_value in the check answer route: {correctValue}")
 
         if request.method == 'POST':
             selected_choice = [int(choice) for choice in request.form.getlist("choice") ] 
+            print(f"selected choice = {selected_choice}")
 
             if isinstance(correctValue, int):
                 if correctValue in selected_choice:
-                    isCorrect = "True"
+                    isCorrect = "True" 
 
             if selected_choice is not None and correctValue == selected_choice:
                 isCorrect = "True"
-
-        return redirect(url_for("course", isCorrect=isCorrect))   
-
-
-        # create the lists with different catagories like correct with difficluty level of 3 or 2 or.....
-        # call that method as needed and pass in the created lists to it.
-        # merge all lists taken from the method into one final list.
+        
+        # session['isCorrect'] = isCorrect
+        print(f"isCorrect value: {isCorrect}")
+        return redirect(url_for("same_course_next",isCorrect=isCorrect))
+        # return redirect(url_for("course_next",isCorrect=isCorrect))
 
         # all incorrect cards will be in the final list
         # 40% of correct cards will be in the final list
@@ -166,104 +453,95 @@ def register_routes(app,db):
         #   if correct and diff of 5, chance is 40%
         #   if correct and diff of 4, chance is 70%
 
-    @app.route('/course_next') 
-    def course_next():
+    @app.route('/same_course_next', methods=['POST', 'GET'])
+    def same_course_next():
+        # isCorrect = session.get('isCorrect')
+        isCorrect = request.args.get('isCorrect')
+        card = session.get('card')
+        isBooked = session.get("isBooked")
+        print(f'isBooked in the same course_next route: {isBooked}')
+        next_card_id = card.get('id')
+        next_card = generate_cards_html_content(card=card,isCorrect=isCorrect,isBooked=isBooked)
 
-        correct_cards = db.session.query(Card).filter(Card.isCorrect == "True").all()
-        print(correct_cards)
-        incorrect_cards =  db.session.query(Card).filter(Card.isCorrect == "False").all()
-        print(incorrect_cards)
+        return render_template('course_next.html', next_card=next_card, card_id=next_card_id)
+ 
+    @app.route('/course_next', defaults={'card_id': None}, methods=['GET', 'POST'])
+    @app.route('/course_next/<int:card_id>', methods=["POST", 'GET'])  
+    def course_next(card_id):
 
-        deck1, deck2, deck3, deck4, deck5 = [], [], [], [], []
+        isCorrect = None
+        isBooked = False
+        # isCorrect = request.args.get('isCorrect')
+        # isBooked = session.get('isBooked')
 
-        for card in correct_cards:
-            match card.diff:
-                case 1:
-                    deck1.append(card)
-                case 2:
-                    deck2.append(card)
-                case 3:
-                    deck3.append(card)
-                case 4:
-                    deck4.append(card)
-                case 5:
-                    deck5.append(card)
+        if card_id is not None:
+            selectedCard = db.session.query(Card).filter(Card.id == card_id).first()
 
-        deck11 = generateDeck(deck1, prob=0.5)
-        deck22 = generateDeck(deck2, prob=0.6)
-        deck33 = generateDeck(deck3, prob=0.8)
-        deck44 = generateDeck(deck4, prob=0.7)
-        deck55 = generateDeck(deck5, prob=0.4)
+        else:
+            correct_cards = db.session.query(Card).filter(Card.isCorrect == "True").all()
+            incorrect_cards =  db.session.query(Card).filter(Card.isCorrect == "False").all()
 
-        final_deck = deck11 + deck22 + deck33 + deck44 + deck55 + incorrect_cards
-        random.shuffle(final_deck)
+            deck1, deck2, deck3, deck4, deck5 = [], [], [], [], []
 
-        selectedCard = random.choice(final_deck) if final_deck else None
-        next_card = generate_Cards(selectedCard.json_column)
-        print(f"type of selectedCard_json_column: {type(next_card)}")
-        print(f"Next card from the final deck: {next_card}")
-        print(f"Next_card[header] = {next_card.get('name')}")
+            for next_card in correct_cards:
+                match next_card.diff:
+                    case 1:
+                        deck1.append(next_card)
+                    case 2:
+                        deck2.append(next_card)
+                    case 3:
+                        deck3.append(next_card)
+                    case 4:
+                        deck4.append(next_card)
+                    case 5:
+                        deck5.append(next_card)
+
+            deck11 = generateDeck(deck1, prob=0.5)
+            deck22 = generateDeck(deck2, prob=0.6)
+            deck33 = generateDeck(deck3, prob=0.8)
+            deck44 = generateDeck(deck4, prob=0.7)
+            deck55 = generateDeck(deck5, prob=0.4)
+
+            final_deck = deck11 + deck22 + deck33 + deck44 + deck55 + incorrect_cards
+            random.shuffle(final_deck)
+            selectedCard = random.choice(final_deck) if final_deck else None
+   
+        # print(f"selectedCard.josn_column: {selectedCard.json_column}")
+        # next_card = generate_cards_data(selectedCard.json_column)
+        next_card = generate_content(selectedCard.json_column)
+
+        print(f'isCorrect in course_next: {isCorrect}')
+        next_card_html = generate_cards_html_content(selectedCard.json_column, isCorrect=isCorrect)
+
+        next_card_id = get_id(next_card)
+        exists = db.session.query(db.session.query(Bookmark).filter_by(card_id=next_card_id).exists()).scalar()
+        if exists:
+            isBooked=True
+
+        session['card'] = next_card
+        # session['isCorrect'] = isCorrect
+
+        print(f'next_card_id: {next_card_id}')
+        print(f'next isBooked card: {isBooked}')
+
+        return render_template('course_next.html', next_card=next_card_html, card_id=next_card_id, isBooked=isBooked)
+
+    @app.route('/discover')
+    def discover(): 
+        return render_template('discover.html')
     
-        return render_template('course_next.html', next_card=next_card)
-
     @app.route('/course')
-    def course():
-        # data = generate_()
-        card = db.session.query(Card).first().json_column
-        print(card)
-        data=generate_Cards(card)
-        isCorrect = request.args.get("isCorrect")  
-        print(isCorrect)
-           
-        return render_template('course.html', 
-                               data = data,
-                               isCorrect = isCorrect)
+    def course(): 
+        return render_template('course.html')
     
-    @app.route('/courseEdit')
+    @app.route('/course_edit')
     def courseEdit():
         return render_template('courseEdit.html')
     
-    # @app.route('/answer', methods=['GET', 'POST'])
-    # def answer():
-    #     user = Questions.get_by_id()  ##pass in the 
-    #     if request.method == 'POST':
-    #         std_ans = request.form.get('std_ans')  ### the name has to be taken from the form. 
-    #         prompt = request.form.get('prompt') ### the name has to be taken from the form.
-
-    #         # ans = (
-    #         #     update(Questions)
-    #         #     .where(Questions.question_text == prompt)
-    #         #     .values(Questions.student_answer == std_ans)
-    #         #         )
-    #         # db.session.execute(ans)
-    #         db.session.query(Questions).filter(Questions.question_text == prompt).update(Questions.student_answer == std_ans)
-    #         db.session.commit()
-
-    #         #check  whether the answers match
-    #         score = 0
-    #         if std_ans == Questions.question_answer:
-    #             score +=1
-    #             pass
-    #             # db.session.query(Score).filter(Score.student_id == ).update(Score.score == score)
-    #             # db.session.commit()
+    @app.route('/card_edit')
+    def cardEdit():
+        return render_template('card-edit.html')
     
-    #content card
-    @app.route('/ask', methods=["GET", "POST"])
-    def ask():
-        if request.method == 'POST':
-            ques_text = request.form.get('ques_text')  ### the name has to be taken from the form. 
-            ques_ans = request.form.get('question_answer')  ### the name has to be taken from the form. 
-            ques_lev = request.form.get('ques_level') ### the name has to be taken from the form. 
-            
-            #update questions table:
-            ques = Questions(question_text=ques_text, question_answer=ques_ans, question_level = ques_lev)
-
-            db.session.add(ques)
-            db.session.commit()
-
-        return render_template('ask.html')
-    
-
     @app.route('/register', methods=["GET", "POST"])
     def register():
         return render_template('register.html')
@@ -271,7 +549,11 @@ def register_routes(app,db):
     @app.route('/login', methods=["GET", "POST"])
     def login():
         return render_template('login.html')
+    
+    @app.route('/myCourses', methods=["GET", "POST"])
+    def myCourses():
+        return render_template('my_courses.html')
 
-    @app.route('/user_profile', methods=["GET", "POST"])
-    def user_profile():
-        return render_template('user_profile.html')
+    @app.route('/profile', methods=["GET", "POST"])
+    def profile():
+        return render_template('profile.html')
