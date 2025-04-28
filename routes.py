@@ -29,9 +29,8 @@ def generate_content(json_file):
 
 def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
 
-    action_url = url_for('checkAnswer')
-    json_path1 = url_for('static', filename='radio-button.js')
-    json_path2 = url_for('static', filename='checkBox-button.js')
+    checkAnswer_action_url = url_for('checkAnswer')
+    json_path_clickButton = url_for('static', filename='click-Button.js')
     img_description = " No description is provided"
     html_fragment = ""
     html_fragment_list = []
@@ -51,11 +50,9 @@ def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
                 for img in images:
                     image_path = url_for('static', filename=img)
                     html_fragment += f''' 
-                    <div class="stackable-group space-after-lg">
                     <div class="content image">
                         <img src="{image_path}" alt="A glass room with a lot of flowers and plants." />
                         <div class="description" id="image0-description">{img_description}</div>
-                    </div>
                     </div>
                     '''
 
@@ -63,10 +60,9 @@ def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
                 mulChoice = get_multipleChoice(content)
                 html_fragment +=f''' 
                 <div class="content">
-                    <div class="question">
-                        <form id="question" method="POST" action="{action_url}">
+                        <form id="question" method="POST" action="{checkAnswer_action_url}">
                           <fieldset>
-                    <script src="{json_path1}" defer></script>'''    
+                    <script src="{json_path_clickButton}" defer></script>'''    
                        
                 for i, choices in enumerate(mulChoice):
                     for j, choice in enumerate(choices):
@@ -105,24 +101,32 @@ def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
                                     }}
                                 }};
                             </script>
-                        </div>
                     </div>'''
+                
+                incorrect_txt = get_incorrect_text(content)
+                for txt in incorrect_txt:
+                    html_fragment += f''' 
+                    <div class="content space-after-lg" style="display: none;" id="incorrectMessage">
+                        <h3 class="content space-after-sm" style="color: red;"> Incorrect </h3> 
+                        <div class="content">
+                            <p>{ txt }</p>
+                        </div>
+                    </div>'''  
                 
             case 'response_select_all_choice':
                 select_all_choice = get_select_all_apply(content)
                 html_fragment += f''' 
                         <div class="content">
-                            <div class="question">
-                                <form id="question" method="POST" action="{action_url}">
+                                <form id="question" method="POST" action="{checkAnswer_action_url}">
                                     <fieldset>
-                                    <script src="{json_path2}" defer></script>'''    
+                                    <script src="{json_path_clickButton}" defer></script>'''    
 
                 for i, choices in enumerate(select_all_choice):
                     for j, choice in enumerate(choices):
                         html_fragment += f'''  
                             <div class="form-row">
                             <label for="selectall-option{j}" class="choice-input center-up-down" name="choice-input">
-                                <input type="checkbox" id="selectall-option{j}" name="choice" value="{j}" />
+                                <input onchange="updateIcons()" type="checkbox" id="selectall-option{j}" name="choice" value="{j}" />
                                 <span class="material-symbols-rounded icon" aria-hidden="true">check_box_outline_blank</span>
                                 <span>{choice}</span>
                             </label>
@@ -154,10 +158,8 @@ def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
                             }}
                         }};
                     </script>
-                </div>
             </div>'''  
-
-            case "incorrect":
+                
                 incorrect_txt = get_incorrect_text(content)
                 for txt in incorrect_txt:
                     html_fragment += f''' 
@@ -167,62 +169,20 @@ def generate_cards_html_content(card={},isCorrect=None,isBooked=None):
                             <p>{ txt }</p>
                         </div>
                     </div>'''  
-
+                
             case "long-text":
                 long_txt = get_long_text(content)
                 for txts in long_txt:
-                    for txt in txts:
                         html_fragment += f'''               
                         <div class="long-text">
                             <p id="longText">
-                                { txt }
+                                { txts }
                             </p>              
-                        </div>'''  
-    
+                        </div>'''
+
+    print(html_fragment)
     html_fragment_list.append(html_fragment)
     return html_fragment_list
-
-# def generate_cards_data(card_data={}):
-#     data = generate_content(card_data)  # Extract 'content' dict
-#     print(f"generated cards from generate_content: {data}")
-
-#     id=data.get('id',"")
-#     name = data.get("name", "")
-#     type_ = data.get("type", "")
-#     chapter = str(data.get("chapter", ""))
-
-#     img = getImage(data)
-#     mulChoice = get_multipleChoice(data)
-#     header = getHeaders(data)
-#     difficulty = getDiffuclty(data)  
-#     shuffle = getShuffle(data)
-#     incorrect_text = get_incorrect_text(data)
-#     long_text = get_long_text(data)
-#     select_all_choice = get_select_all_apply(data)
-#     correct_value = getCorrectValue(data)
-
-#     # print(f"Card Name: {name}, Type: {type_}, Chapter: {chapter}, "
-#     #   f"Header: {header}, Image: {img}, Multiple Choice: {mulChoice}, "
-#     #   f"Difficulty: {difficulty}, Shuffle: {shuffle}, "
-#     #   f"Question Incorrect: {incorrect_text}, Long Text: {long_text}, "
-#     #   f"Response Select All Choice: {select_all_choice},")
-    
-#     return {
-#         "id" : id,
-#         "name": name,
-#         "type": type_,
-#         "chapter": chapter,
-#         "header": header,
-#         "image": img,
-#         "multiple_choice": mulChoice,
-#         "difficulty": difficulty,
-#         "shuffle": shuffle,
-#         "question_incorrect": incorrect_text,
-#         "long-text": long_text,
-#         "correct_value": correct_value,
-#         "response_select_all_choice": select_all_choice,
-#         "json_card": data
-#     } 
 
 def get_id(content_list):
     data = generate_content(content_list)
@@ -234,11 +194,15 @@ def get_incorrect_text(content_list):
     incorrect_texts = []
     try:
         for item in content_list.get('content', []):
-            if item.get('type') == 'incorrect':
-                incorrect_texts.append(item.get('content'))
+            # if item.get('type') == 'incorrect':
+            if 'incorrect' in item:
+                # incorrect_texts.append(item.get('content'))
+                incorrect_texts.append(item['incorrect'])
+
     except Exception as e:
         print(e)
-
+    for i in incorrect_texts:
+        print(i)
     return incorrect_texts
         
 def get_long_text(content_list):
@@ -316,21 +280,16 @@ def getShuffle(content_list):
     return None  
 
 def getCorrectValue(content_list):
-    # correct_values = []
     print(content_list.get('content'))
     try:
         for item in content_list.get('content',[]):
             if 'correct' in item:
                 return item['correct']
-                    # correct_values.append(item['correct']) 
     
     except Exception as e:
         print(e)
 
     return None
-    # print(f"type of correct-values is: {type(correct_values)}")
-    # print(f"correct_values are: {correct_values}")
-    # return correct_values
 
 def getDiffuclty(content_list):
     try:
@@ -358,7 +317,7 @@ def get_current_card():
     
     card = session['card']
     card_id = card.get('id') ## we have to have an id in every json file. 
-    print(f"card title is {card_id}")
+    # print(f"card title is {card_id}")
     card_cur = Card.query.filter_by(id=card_id).first() ##this is an object of type Card.
     return card_cur
 
@@ -374,13 +333,11 @@ def register_routes(app,db):
     def save_bookmark(card_id):
         card = session.get('card')
         card_id = card.get('id')
-        print(f"card_id in the bookmark route: {card_id}")
         exists = db.session.query(Bookmark.query.filter(Bookmark.card_id == card_id).exists()).scalar()
         if exists:
             isBooked = True
         else:
             isBooked = False
-        print(f'does it exist?: {exists}')
 
         if card_id:
             if isBooked == False:
@@ -406,28 +363,12 @@ def register_routes(app,db):
     def card_edit():
         return render_template('card-edit.html')  
 
-    # @app.route('/show_bookedCard', defaults={'card_id': None}, methods=['GET', 'POST'])
-    # @app.route('/show_bookedCard/<int:card_id>', methods=["POST", 'GET'])
-    # def show_bookedCard():
-    #     isCorrect = "False"
-    #     isBooked = "True"
-    #     selected_cardId = request.form.get('value') ##card Id from the form
-    #     card = db.session.query(Card).filter_by(id=selected_cardId).first()
-    #     print(f"type of card in the show_bookmarks route: {type(card)}")
-    #     displayed_card = generate_cards_html_content(card=card, isCorrect=isCorrect, isBooked=isBooked)
-
-    #     return render_template('course_next.html', next_card=displayed_card, card_id=selected_cardId)
-
     @app.route('/checkAnswer', methods=['GET', 'POST'])
-    # @app.route('/checkAnswer/<isCorrect>', methods=['GET', 'POST'])
     def checkAnswer(): 
         isCorrect = "False"
         card = session.get('card')
-        # card_id = card.get('id')
-        # correctValue = card.get('correct') 
+        card_id = card.get('id')
         correctValue = getCorrectValue(card)
-        print(f"card in the check answer route: {card}")
-        print(f"correct_value in the check answer route: {correctValue}")
 
         if request.method == 'POST':
             selected_choice = [int(choice) for choice in request.form.getlist("choice") ] 
@@ -440,10 +381,10 @@ def register_routes(app,db):
             if selected_choice is not None and correctValue == selected_choice:
                 isCorrect = "True"
         
-        # session['isCorrect'] = isCorrect
+
         print(f"isCorrect value: {isCorrect}")
+        Card.update_isCorrect(card_id=card_id, isCorrect=isCorrect)
         return redirect(url_for("same_course_next",isCorrect=isCorrect))
-        # return redirect(url_for("course_next",isCorrect=isCorrect))
 
         # all incorrect cards will be in the final list
         # 40% of correct cards will be in the final list
@@ -455,11 +396,9 @@ def register_routes(app,db):
 
     @app.route('/same_course_next', methods=['POST', 'GET'])
     def same_course_next():
-        # isCorrect = session.get('isCorrect')
         isCorrect = request.args.get('isCorrect')
         card = session.get('card')
         isBooked = session.get("isBooked")
-        print(f'isBooked in the same course_next route: {isBooked}')
         next_card_id = card.get('id')
         next_card = generate_cards_html_content(card=card,isCorrect=isCorrect,isBooked=isBooked)
 
@@ -471,8 +410,6 @@ def register_routes(app,db):
 
         isCorrect = None
         isBooked = False
-        # isCorrect = request.args.get('isCorrect')
-        # isBooked = session.get('isBooked')
 
         if card_id is not None:
             selectedCard = db.session.query(Card).filter(Card.id == card_id).first()
@@ -483,6 +420,8 @@ def register_routes(app,db):
 
             deck1, deck2, deck3, deck4, deck5 = [], [], [], [], []
 
+            print(f'correct_cards: {correct_cards}')
+            print(f'Incorrect_cards: {incorrect_cards}')
             for next_card in correct_cards:
                 match next_card.diff:
                     case 1:
@@ -506,11 +445,8 @@ def register_routes(app,db):
             random.shuffle(final_deck)
             selectedCard = random.choice(final_deck) if final_deck else None
    
-        # print(f"selectedCard.josn_column: {selectedCard.json_column}")
-        # next_card = generate_cards_data(selectedCard.json_column)
         next_card = generate_content(selectedCard.json_column)
 
-        print(f'isCorrect in course_next: {isCorrect}')
         next_card_html = generate_cards_html_content(selectedCard.json_column, isCorrect=isCorrect)
 
         next_card_id = get_id(next_card)
@@ -519,10 +455,6 @@ def register_routes(app,db):
             isBooked=True
 
         session['card'] = next_card
-        # session['isCorrect'] = isCorrect
-
-        print(f'next_card_id: {next_card_id}')
-        print(f'next isBooked card: {isBooked}')
 
         return render_template('course_next.html', next_card=next_card_html, card_id=next_card_id, isBooked=isBooked)
 
@@ -534,7 +466,7 @@ def register_routes(app,db):
     def course(): 
         return render_template('course.html')
     
-    @app.route('/course_edit')
+    @app.route('/courseEdit')
     def courseEdit():
         return render_template('courseEdit.html')
     

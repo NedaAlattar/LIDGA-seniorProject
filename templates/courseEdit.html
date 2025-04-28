@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='consts.css')}}" />
-    
     <script src="{{ url_for('static', filename='course-edit.js') }}" defer></script>
 
     <!-- Import Google Material Symbols from Google Fonts -->
@@ -18,55 +17,11 @@
   </head>
 
   <body>
-    <nav id="nav" class="nav">
-      <ul>
-        <li class="nav-item">
-          <a href="{{url_for('index')}}" class="nav-group-item">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 181 181" xmlns="http://www.w3.org/2000/svg">
-                <path fill="var(--accent-text-color)" d="m125,135h-10c-3.5,0-6,2.5-6,6c0,3.5,2.5,6,6,6h35c3.25,0,6-2.75,6-6c0-3.5-2.75-6-6-6h-10.5l-10-17l12-7c9.5-6.5,16.5-15.5,19.5-26.5l9.5-35l11.5-3c3-1,5-4.5,5-6c0-2-2-5-5-6l-22.5-6c-9-3.5-19,0-24,8l-1.5,2.5c-7,10.5-12.5,13.5-12.5,13.5l-112,65c-3,1.5-4,5.5-2.5,8.5c1.5,3,5.5,4,8.5,2l71-41h33c3.5,0,6.5-2.5,6.5-6c0-3-3-6-6-6h-13l20.5-11.5c7-4.5,13-11,17-18.5l1.5-2.5c1.5-2.5,5-4,8-2.5c3,1,4.5,4.5,4,7.5l-9.5,33.5c-2,8-7.5,15-14.5,19.5l-29,17c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2l7-4zm-51.5-18c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2zm-33.5,1c-3,1.5-4,5.5-2.5,8.5c2,3,5.5,4,8.5,2.5l30-17.5c3-1.5,4-5.5,2.5-8.5c-2-3-5.5-4-8.5-2z" />
-              </svg>
-            </span>
-            <div class="nav-main-link nav-can-hide">Raven</div>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-group-item" href="discover.html">
-            <span class="material-symbols-rounded" aria-hidden="true">explore</span>
-            <span>Discover</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-group-item" href="{{url_for('myCourses')}}">
-            <span class="material-symbols-rounded" aria-hidden="true">school</span>
-            <span>My Courses</span>
-          </a>
-        </li>
-        <li class="nav-separator nav-can-hide"></li>
-        <li class="nav-item nav-can-hide"><a href="{{url_for('course')}}">Course</a></li>
-        <li class="nav-item nav-cut-overflow nav-active nav-can-hide"><a href="{{url_for('courseEdit')}}">Course Edit</a></li>       
-        <li class="nav-item"><a href="{{url_for('cardEdit')}}">Edit card</a></li>
-      </ul>
-
-      <ul>
-        <li class="nav-item">
-          <a href="profile.html" class="nav-group-item" aria-label="profile">
-            <span class="nav-can-hide">Hello, John</span>
-            <span class="material-symbols-rounded" aria-hidden="true">account_circle</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    {% include "navbar.html" %}
 
     <main>
       <div class="content-box">
         <div class="content-group">
-          <div>
-            <a href="course_previous.html" class="link-icon icon" aria-label="back">
-              <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>
-            </a>
-          </div>
-
           <div class="content">
             <div class="content-group space-after-med">
               <span class="material-symbols-rounded icon" aria-hidden="true" id="course-icon">terminal</span>
@@ -87,124 +42,29 @@
                     </select>
                   </div>
                 </div>
-                <div class="content">
-                  <h4 class="space-after-sm">Description</h4>
-                  <div class="content grow-wrap">
-                    <textarea onInput="this.parentNode.dataset.replicatedValue = this.value;" placeholder="Description"></textarea>
-                  </div>
-                </div>
               </div>
               
               <div class="content">
   
                 <div class="content content-group">
                   <input class="content heading-text space-after-med" type="text" placeholder="Chapter name" value="Chapter 1" />
-                  <button aria-label="delete card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-                  </button>
                 </div>
                 
-                <div class="content content-group space-after-med">
-                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">help_center</span>
-                  <h3 class="content">What Building Is Pictu...</h3>
-                  <a href="0001.html" aria-label="edit card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
-                  </a>
-                  <button aria-label="copy card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
-                  </button>
-                  <button aria-label="delete card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-                  </button>
-                  <button aria-label="move card up" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
-                  </button>
-                  <button aria-label="move card down" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
-                  </button>
-                </div>
-                
-                <div class="content content-group space-after-med">
-                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">sticky_note_2</span>
-                  <h3 class="content">What Building Is Pictu...</h3>
-                  <a href="" aria-label="edit card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
-                  </a>
-                  <button aria-label="copy card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
-                  </button>
-                  <button aria-label="delete card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-                  </button>
-                  <button aria-label="move card up" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
-                  </button>
-                  <button aria-label="move card down" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
-                  </button>
-                </div>
-                
-                
-                <div class="content content-group space-after-med">
-                  <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">image</span>
-                  <h3 class="content">What Building Is Pictu...</h3>
-                  <a href="" aria-label="edit card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
-                  </a>
-                  <button aria-label="copy card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
-                  </button>
-                  <button aria-label="delete card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-                  </button>
-                  <button aria-label="move card up" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
-                  </button>
-                  <button aria-label="move card down" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
-                  </button>
-                </div>
-  
-                <div class="content content-group">
-                  <input class="content heading-text space-after-med" type="text" placeholder="Chapter name" value="Chapter 2" />
-                  <button aria-label="delete card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-                  </button>
-                </div>
-                
-                <div class="content content-group space-after-med">
+                <div class="content content-group space-after-med" style="display: flex; align-items: center; gap: 0.5rem;">
                   <span class="material-symbols-rounded icon" aria-hidden="true" aira-label="question">article</span>
-                  <h3 class="content">What Building Is Pictu...</h3>
-                  <a href="" aria-label="edit card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">edit</span>
-                  </a>
-                  <button aria-label="copy card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
-                  </button>
-                  <button aria-label="delete card" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">delete</span>
-                  </button>
-                  <button aria-label="move card up" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_up</span>
-                  </button>
-                  <button aria-label="move card down" class="button-icon icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">move_down</span>
-                  </button>
+                      {% if data %}
+                        <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0;">
+                          {% for choice in data %}
+                            <li name="choice" value="{{ loop.index0 }}">
+                            <h3>
+                            <a href="{{ url_for('course_next', card_id=choice.id) }}">{{ choice.name }}</a>
+                            </h3>  
+                            </li>
+                            {% endfor %}
+                        </ul>
+                      {% endif %}
                 </div>
-                <div id="add-content">
-                <button>
-                  <span class="material-symbols-rounded" aria-hidden="true" aria-label="add card">Add</span>
-                  <span>Add card</span>
-                </button>
               </div>
-  
-              </div>
-            </div>
-            
-            <div>
-              <a href="{{url_for('course_next')}}" class="link-icon icon" aria-label="next">
-                <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
-              </a>
             </div>
           </div>
         </div>

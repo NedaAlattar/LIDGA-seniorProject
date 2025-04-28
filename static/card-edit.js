@@ -865,7 +865,8 @@ function generateMediaContent(contentId) {
     imageContent.id = contentId + "-media";
     
     let img = document.createElement("img");
-    img.src = "images/greenhouse.jpg";
+    var imageUrl = "{{ url_for('static', filename='greenhouse.jpg') }}"
+    img.src = imageUrl;
     
     let imgAlt = document.createElement("div");
     imgAlt.classList.add("description");
