@@ -14,15 +14,7 @@ class Card(db.Model):
     @staticmethod
     def update_isCorrect(card_id, isCorrect):
         Card.query.get(card_id).isCorrect = isCorrect
-        # card = Card.query.get(card_id)
-        # if card:
-        #     card.isCorrect = isCorrect
         db.session.commit()
-
-    # @staticmethod
-    # def update_bookmarks(bookmarks_to_update):
-    #     Bookmark.query.filter(Card.id.in_(bookmarks_to_update)).update({Card.isBooked: True})
-    #     db.session.commit()
 
 def insert():
     db.session.query(Card).delete()
@@ -292,10 +284,7 @@ class Bookmark(db.Model):
     __tablename__ = 'bookmarks'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # user_id = db.Column(db.Integer)
-    # card_id = db.Column(db.Integer, db.ForeignKey('cards.id'), nullable = False)
     card_id = db.Column(db.Integer, nullable = False)
-    # card = db.relationship('Card', backref="bookmarks")
     card = db.Column(JSON) 
     
  

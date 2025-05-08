@@ -8,10 +8,9 @@ db = SQLAlchemy() #create object db
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' 
-    app.config['SQLALCHEMY_DATABASE_URI'] =  "postgresql://postgres:AhlamNadoosh%40%402001@localhost:5432/json_database_example"
+    app.config['SQLALCHEMY_DATABASE_URI'] =  "postgresql://@localhost:5432/json_database_example"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.secret_key = 'fdjrihgtuhgijrgiuer'
+    app.secret_key = ''
     app.config['SESSION_TYPE'] = 'filesystem'
 
     db.init_app(app)  #initialize the application
